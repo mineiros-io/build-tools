@@ -37,20 +37,3 @@ RUN sed -i '/.*tflint_linux_amd64.zip/!d' checksums.txt && \
 RUN unzip tflint_linux_amd64.zip -d /usr/local/bin
 
 WORKDIR /app/src
-
-# Copy sources
-#COPY . .
-
-# Install pre-commit hooks
-#RUN pre-commit install
-
-#RUN addgroup --gid "$GID" "$USER" \
-#    && adduser \
-#    --disabled-password \
-#    --gecos "" \
-#    --home "$(pwd)" \
-#    --ingroup "$USER" \
-#    --no-create-home \
-#    --uid "$UID" \
-#    "$USER"
-# USER $USER
