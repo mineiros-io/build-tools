@@ -1,53 +1,58 @@
-#!/usr/bin/env make
+MOUNT_TARGET_DIRECTORY  = /app/src
+BUILD_TOOLS_DOCKER_REPO = mineiros/build-tools
 
-# set required build variables if env variables aren't set yet
-ifndef BUILD_VERSION
-	BUILD_VERSION := latest
+# Set default value for environment variable if there aren't set already
+ifndef BUILD_TOOLS_VERSION
+	BUILD_TOOLS_VERSION := latest
 endif
 
-ifndef REPOSITORY_NAME
-	REPOSITORY_NAME := build-tools
+ifndef BUILD_TOOLS_DOCKER_IMAGE
+	BUILD_TOOLS_DOCKER_IMAGE := ${BUILD_TOOLS_DOCKER_REPO}:${BUILD_TOOLS_VERSION}
 endif
 
-ifndef DOCKER_CACHE_IMAGE
-	DOCKER_CACHE_IMAGE := ${REPOSITORY_NAME}-${BUILD_VERSION}.tar
+ifndef TERRAFORM_PLAN_FILENAME
+	TERRAFORM_PLAN_FILENAME := tfplan
 endif
 
-ifndef TERRAFORM_PLAN
-	TERRAFORM_PLAN := tfplan
-endif
+GREEN  := $(shell tput -Txterm setaf 2)
+YELLOW := $(shell tput -Txterm setaf 3)
+WHITE  := $(shell tput -Txterm setaf 7)
+RESET  := $(shell tput -Txterm sgr0)
 
-#ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+## Display help for all targets
+help:
+	@awk '/^[a-zA-Z_0-9%:\\\/-]+:/ { \
+		msg = match(lastLine, /^## (.*)/); \
+			if (msg) { \
+				cmd = $$1; \
+				msg = substr(lastLine, RSTART + 3, RLENGTH); \
+				gsub("\\\\", "", cmd); \
+				gsub(":+$$", "", cmd); \
+				printf "  \x1b[32;01m%-35s\x1b[0m %s\n", cmd, msg; \
+			} \
+	} \
+	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
 
-# Run pre-commit hooks
+.DEFAULT_GOAL := help
+
+## Mounts the working directory inside a docker container and runs the pre-commit hooks
 docker-run-pre-commit-hooks:
-	docker run --rm \
-		mineiros/build-tools:latest \
-		-v `pwd`:/app/src \
+	@echo "${GREEN}Start running the pre-commit hooks with docker${RESET}"
+	@docker run --rm \
+		-v ${PWD}:${MOUNT_TARGET_DIRECTORY} \
+		${BUILD_TOOLS_DOCKER_IMAGE} \
 		sh -c "pre-commit install && pre-commit run --all-files"
 
-# Run terraform plan
-docker-run-terraform-plan:
-	docker run --rm \
+## Mounts the working directory inside a new container and runs the Go tests.
+## Requires $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY to be set
+docker-run-unit-tests:
+	@echo "${GREEN}Start running the unit tests with docker${RESET}"
+	@docker run --rm \
 		-e AWS_ACCESS_KEY_ID \
 		-e AWS_SECRET_ACCESS_KEY \
-		-e GITHUB_TOKEN \
-		-e GITHUB_ORGANIZATION \
-		-v `pwd`:/app/src \
-		mineiros/build-tools:latest \
-		sh -c "terraform init -input=false && terraform plan -input=false"
+		-v ${PWD}:${MOUNT_TARGET_DIRECTORY} \
+		${BUILD_TOOLS_DOCKER_IMAGE} \
+		go test -v test/terraform_aws_s3_bucket_test.go
 
-# Run terraform apply
-docker-run-terraform-apply:
-	docker run --rm \
-		-e AWS_ACCESS_KEY_ID \
-		-e AWS_SECRET_ACCESS_KEY \
-		-e GITHUB_TOKEN \
-		-e GITHUB_ORGANIZATION \
-		-v `pwd`:/app/src \
-		mineiros/build-tools:latest \
-		sh -c "terraform init -input=false && \
-		terraform plan -out=${TERRAFORM_PLAN} -input=false &&  \
-		terraform apply -input=false -auto-approve ${TERRAFORM_PLAN}"
+.PHONY: help docker-run-pre-commit-hooks docker-run-tests
 
-.PHONY: docker-run-pre-commit-hooks docker-run-terraform-plan docker-run-terraform-apply
