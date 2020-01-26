@@ -1,0 +1,19 @@
+export SHELL = /bin/bash
+export BUILD_TOOLS_ORG ?= mineiros-io
+export BUILD_TOOLS_REPOSITORY ?= build-tools
+export BUILD_TOOLS_BRANCH ?= master
+export BUILD_TOOLS_PATH ?= $(shell until [ -d "$(BUILD_TOOLS_PROJECT)" ] || [ "`pwd`" == '/' ]; do cd ..; done; pwd)/$(BUILD_TOOLS_PROJECT)
+-include $(BUILD_TOOLS_PATH)/Makefile
+
+.PHONY : init
+## Init build-tools
+init::
+	@curl --retry 5 --fail --silent --retry-delay 1 https://raw.githubusercontent.com/$(BUILD_TOOLS_ORG)/$(BUILD_TOOLS_REPOSITORY)/$(BUILD_TOOLS_BRANCH)/bin/install.sh | \
+		bash -s "$(BUILD_TOOLS_ORG)" "$(BUILD_TOOLS_PROJECT)" "$(BUILD_TOOLS_BRANCH)"
+
+#.PHONY : clean
+### Clean build-harness
+#clean::
+#	@[ "$(BUILD_TOOLS_PATH)" == '/' ] || \
+#	 [ "$(BUILD_TOOLS_PATH)" == '.' ] || \
+#	   echo rm -rf $(BUILD_TOOLS_PATH)
