@@ -3,7 +3,7 @@ FROM golang:1.13.5-alpine3.11
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
 ENV TFLINT_VERSION=v0.13.4
-ENV TERRAFORM_VERSION=0.12.20
+ENV TERRAFORM_VERSION=0.12.21
 
 # is this ok?
 ENV TF_IN_AUTOMATION="true"
