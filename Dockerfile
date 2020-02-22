@@ -23,7 +23,6 @@ RUN wget \
     sha256sum -cs terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin
 
-
 # Download Tflint, verify checksum and install to bin dir
 RUN wget \
     https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_linux_amd64.zip \
@@ -31,5 +30,8 @@ RUN wget \
     sed -i '/.*tflint_linux_amd64.zip/!d' checksums.txt && \
     sha256sum -cs checksums.txt && \
     unzip tflint_linux_amd64.zip -d /usr/local/bin
+
+# Install golint and goimports that are being by some pre-commit hooks
+RUN go get -u golang.org/x/lint/golint golang.org/x/tools/cmd/goimports
 
 WORKDIR /app/src
