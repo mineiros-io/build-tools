@@ -2,11 +2,13 @@ FROM golang:1.13.5-alpine3.11
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
-ENV TFLINT_VERSION=v0.13.4
+ENV TFLINT_VERSION=v0.14.0
 ENV TERRAFORM_VERSION=0.12.20
 
-# is this ok?
-ENV TF_IN_AUTOMATION="true"
+# If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
+# to run next. This can make the output more consistent and less confusing in workflows where users don't directly
+# execute Terraform commands, like in CI systems or other wrapping applications.
+ENV TF_IN_AUTOMATION="yes"
 
 # Set Go flag so it won't require gcc https://github.com/golang/go/issues/26988
 ENV CGO_ENABLED=0
