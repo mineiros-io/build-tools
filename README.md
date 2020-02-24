@@ -48,7 +48,8 @@ We can also help you with:
 
 Contributions are very welcome! We use [Pull Requests](https://github.com/mineiros-io/build-tools/pulls)
 for accepting changes.
-Please see our [Contribution Guidelines](https://github.com/mineiros-io/build-tools/tree/master/CONTRIBUTING.md) for full details.
+Please see our [Contribution Guidelines](https://github.com/mineiros-io/build-tools/tree/master/CONTRIBUTING.md)
+for full details.
 
 ## License
 

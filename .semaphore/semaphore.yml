@@ -1,0 +1,29 @@
+version: v1.0
+name: "Build-Tools CI Pipeline"
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+
+  - name: "Build"
+    task:
+      prologue:
+        commands:
+          - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
+          - checkout
+      jobs:
+        - name: "Build Docker Image"
+          commands:
+            - make docker/build
+            - make docker/save
+            - cache store ${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_VERSION}.tar
+
+promotions:
+  - name: "Docker Hub"
+    pipeline_file: docker-hub.yml
+    # Promotion should only be run automatically for tags
+    auto_promote_on:
+      - result: passed
+        branch:
+          - ^refs/tags/v.*$
