@@ -2,8 +2,9 @@ FROM golang:1.14.0-alpine3.11
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
-ENV TFLINT_VERSION=v0.15.0
+ENV TFLINT_VERSION=v0.15.1
 ENV TERRAFORM_VERSION=0.12.21
+ENV PACKER_VERSION=1.5.4
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
@@ -35,5 +36,13 @@ RUN wget \
 
 # Install golint and goimports that are being by some pre-commit hooks
 RUN go get -u golang.org/x/lint/golint golang.org/x/tools/cmd/goimports
+
+# Download Packer, verify checksum and install to bin dir
+RUN wget \
+    https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip \
+    https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_SHA256SUMS && \
+    sed -i '/packer_.*_linux_amd64.zip/!d' packer_${PACKER_VERSION}_SHA256SUMS && \
+    sha256sum -cs packer_${PACKER_VERSION}_SHA256SUMS && \
+    unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin
 
 WORKDIR /app/src
