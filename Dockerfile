@@ -2,8 +2,8 @@ FROM golang:1.14.0-alpine3.11
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
-ENV TFLINT_VERSION=v0.15.0
-ENV TERRAFORM_VERSION=0.12.21
+ENV TFLINT_VERSION=v0.15.1
+ENV TERRAFORM_VERSION=0.12.23
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
