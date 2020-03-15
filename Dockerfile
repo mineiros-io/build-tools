@@ -3,7 +3,7 @@ FROM golang:1.14.0-alpine3.11
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
 ENV TERRAFORM_VERSION=0.12.23
-ENV TFLINT_VERSION=v0.15.1
+ENV TFLINT_VERSION=v0.15.2
 ENV PACKER_VERSION=1.5.4
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
