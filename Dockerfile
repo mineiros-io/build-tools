@@ -3,7 +3,7 @@ FROM golang:1.14.0-alpine3.11
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
 ENV TERRAFORM_VERSION=0.12.23
-ENV TFLINT_VERSION=v0.15.1
+ENV TFLINT_VERSION=v0.15.2
 ENV PACKER_VERSION=1.5.4
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
@@ -15,8 +15,15 @@ ENV TF_IN_AUTOMATION="yes"
 ENV CGO_ENABLED=0
 
 # Install dependencies
-RUN apk add --update bash git openssh openssl python3 && \
-    pip3 install pre-commit
+RUN apk add --update docker bash git openrc openssh openssl python3
+
+# We run Docker as Docker-out-of-Docker (DooD). DooD is a solution where you run the Docker CLI inside a container,
+# and connect it to the host’s Docker by virtue of mount the /var/run/docker.sock into the container. Docker should be
+# started on container startup.
+RUN rc-update add docker boot
+
+# Install pre-commit framework
+RUN pip3 install pre-commit
 
 # Download terraform, verify checksum and install to bin dir
 RUN wget \
