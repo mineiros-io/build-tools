@@ -2,9 +2,9 @@ FROM golang:1.14.1-alpine3.11
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
-ENV TERRAFORM_VERSION=0.12.23
-ENV TFLINT_VERSION=v0.15.2
-ENV PACKER_VERSION=1.5.4
+ENV TERRAFORM_VERSION=0.12.24
+ENV TFLINT_VERSION=v0.15.3
+ENV PACKER_VERSION=1.5.5
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
@@ -53,3 +53,5 @@ RUN wget \
     unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin
 
 WORKDIR /app/src
+
+CMD echo "You must call terraform, tflint or packer  commands: e.g. `docker run mineiros/build-tools terraform --version`"
