@@ -26,10 +26,9 @@ blocks:
       prologue:
         commands:
           - checkout --use-cache
-          - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME}
           - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
           - cache restore ${DOCKER_IMAGE_VERSION}
-          - make docker/load
+          - sudo make docker/load
       jobs:
         - name: Run Snyk
           commands:
