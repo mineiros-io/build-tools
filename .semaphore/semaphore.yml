@@ -25,10 +25,10 @@ blocks:
         - name: SNYK_CREDENTIALS
       prologue:
         commands:
-          - checkout --use-cache
           - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
+          - checkout
           - cache restore ${DOCKER_IMAGE_VERSION}
-          - sudo make docker/load
+          - make docker/load
       jobs:
         - name: Run Snyk
           commands:
