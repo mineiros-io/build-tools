@@ -44,3 +44,8 @@ vendor
 
 # Terratest directory used to store temporary data
 .test-data
+
+# Snyke reports
+snyk-result.json
+snyk-error.log
+

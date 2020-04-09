@@ -20,8 +20,12 @@ ifndef DOCKER_IMAGE_VERSION
 	DOCKER_IMAGE_VERSION := latest
 endif
 
-ifndef DOCKER_IMAGE_TAG
-	DOCKER_IMAGE_TAG := latest
+ifndef DOCKER_SOCKET
+	DOCKER_SOCKET := /var/run/docker.sock
+endif
+
+ifndef SNYK_MONITOR
+	SNYK_MONITOR := true
 endif
 
 GREEN  := $(shell tput -Txterm setaf 2)
@@ -47,9 +51,9 @@ help:
 docker/build:
 	docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} .
 
-## Create a new tag ( expects the "DOCKER_IMAGE_TAG" environment variable to be set )
+## Create a new tag ( expects the "DOCKER_IMAGE_VERSION" environment variable to be set )
 docker/tag:
-	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION}
 
 ## Save the docker image to disk
 docker/save:
@@ -66,3 +70,13 @@ docker/login:
 ## Push docker image to hub.docker.com
 docker/push:
 	docker push ${DOCKER_HUB_REPO}
+
+## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
+docker/snyk:
+	@docker run -it \
+		-e "SNYK_TOKEN=${SNYK_TOKEN}" \
+		-e "USER_ID=${SNYK_USER_ID}" \
+		-e "MONITOR=${SNYK_MONITOR}" \
+		-v "${PWD}:/project" \
+		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
+		snyk/snyk-cli:docker test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} --file=Dockerfile
