@@ -49,19 +49,19 @@ help:
 
 ## Build the docker image
 docker/build:
-	docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} .
+	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} .
 
 ## Create a new tag ( expects the "DOCKER_IMAGE_VERSION" environment variable to be set )
 docker/tag:
-	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION}
+	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION}
 
 ## Save the docker image to disk
 docker/save:
-	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} > "${DOCKER_IMAGE_VERSION}.tar"
+	@docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} > "${DOCKER_IMAGE_VERSION}.tar"
 
 ## Load saved image
 docker/load:
-	docker load < "${DOCKER_IMAGE_VERSION}.tar"
+	@docker load < "${DOCKER_IMAGE_VERSION}.tar"
 
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
 docker/login:
@@ -69,13 +69,13 @@ docker/login:
 
 ## Push docker image to hub.docker.com
 docker/push:
-	docker push ${DOCKER_HUB_REPO}
+	@docker push ${DOCKER_HUB_REPO}
 
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
 docker/snyk:
 	@docker run --rm \
-		-e SNYK_TOKEN \
-		-e SNYK_USER_ID \
+		-e "SNYK_TOKEN=${SNYK_TOKEN}" \
+		-e "USER_ID=${SNYK_USER_ID}" \
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
