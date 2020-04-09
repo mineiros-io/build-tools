@@ -4,14 +4,16 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-blocks:
 
+global_job_config:
+  prologue:
+    commands:
+      - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
+      - checkout --use-cache
+
+blocks:
   - name: Build
     task:
-      prologue:
-        commands:
-          - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
-          - checkout
       jobs:
         - name: Build Docker Image
           commands:
@@ -25,8 +27,6 @@ blocks:
         - name: SNYK_CREDENTIALS
       prologue:
         commands:
-          - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
-          - checkout
           - cache restore ${DOCKER_IMAGE_VERSION}
           - make docker/load
       jobs:
