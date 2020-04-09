@@ -73,10 +73,12 @@ docker/push:
 
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
 docker/snyk:
-	@docker run -it \
-		-e SNYK_TOKEN \
-		-e SNYK_USER_ID \
+	@docker run --rm -it \
+		-e $$SNYK_TOKEN \
+		-e $$SNYK_USER_ID \
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
 		snyk/snyk-cli:docker test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} --file=Dockerfile
+
+.PHONY: help docker/build docker/tag docker/load docker/login docker/push docker/save docker/snyk
