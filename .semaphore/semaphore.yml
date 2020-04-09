@@ -6,16 +6,6 @@ agent:
     os_image: ubuntu1804
 blocks:
 
-#  - name: Test
-#    task:
-#      prologue:
-#        commands:
-#          - checkout
-#      jobs:
-#        - name: Run Snyk
-#          commands:
-#            -
-
   - name: Build
     task:
       prologue:
@@ -28,6 +18,22 @@ blocks:
             - make docker/build
             - make docker/save
             - cache store ${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_VERSION}.tar
+
+  - name: Forensics
+    task:
+      secrets:
+        - name: SNYK_CREDENTIALS
+      prologue:
+        commands:
+          - checkout --use-cache
+          - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME}
+          - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
+          - cache restore ${DOCKER_IMAGE_VERSION}
+          - make docker/load
+      jobs:
+        - name: Run Snyk
+          commands:
+            - make docker/snyk
 
 promotions:
   - name: Docker Hub
