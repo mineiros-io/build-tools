@@ -1,26 +1,41 @@
 version: v1.0
-name: "Build-Tools CI Pipeline"
+name: Build-Tools CI Pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-blocks:
 
-  - name: "Build"
+global_job_config:
+  prologue:
+    commands:
+      - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
+      - checkout --use-cache
+
+blocks:
+  - name: Build
     task:
-      prologue:
-        commands:
-          - export DOCKER_IMAGE_VERSION=${SEMAPHORE_GIT_SHA:0:7}
-          - checkout
       jobs:
-        - name: "Build Docker Image"
+        - name: Build Docker Image
           commands:
             - make docker/build
             - make docker/save
             - cache store ${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_VERSION}.tar
 
+  - name: Forensics
+    task:
+      secrets:
+        - name: SNYK_CREDENTIALS
+      prologue:
+        commands:
+          - cache restore ${DOCKER_IMAGE_VERSION}
+          - make docker/load
+      jobs:
+        - name: Run Snyk
+          commands:
+            - make docker/snyk
+
 promotions:
-  - name: "Docker Hub"
+  - name: Docker Hub
     pipeline_file: docker-hub.yml
     auto_promote_on:
       - result: passed
