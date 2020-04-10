@@ -28,6 +28,10 @@ ifndef SNYK_MONITOR
 	SNYK_MONITOR := true
 endif
 
+ifndef SNYK_CLI_DOCKER_IMAGE
+	SNYK_CLI_DOCKER_IMAGE := snyk/snyk-cli:1.305.1-docker
+endif
+
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
 WHITE  := $(shell tput -Txterm setaf 7)
@@ -74,11 +78,11 @@ docker/push:
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
 docker/snyk:
 	@docker run --rm \
-		-e "SNYK_TOKEN=${SNYK_TOKEN}" \
-		-e "USER_ID=${SNYK_USER_ID}" \
+		-e SNYK_TOKEN \
+		-e SNYK_USER_ID \
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		snyk/snyk-cli:docker test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} --file=Dockerfile
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} --file=Dockerfile
 
 .PHONY: help docker/build docker/tag docker/load docker/login docker/push docker/save docker/snyk
