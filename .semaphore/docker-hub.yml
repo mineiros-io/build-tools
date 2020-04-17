@@ -19,4 +19,5 @@ blocks:
       jobs:
         - name: "Push Image"
           commands:
+            - make docker/tag
             - make docker/push
