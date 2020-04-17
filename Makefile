@@ -59,9 +59,9 @@ help:
 docker/build:
 	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
 
-## Create a new tag ( expects the "DOCKER_IMAGE_TAG" environment variable to be set )
+## Create a new tag ( expects the "DOCKER_IMAGE_ADDITIONAL_TAG" environment variable to be set )
 docker/tag:
-	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_ADDITIONAL_TAG}
 
 ## Save the docker image to disk
 docker/save:
