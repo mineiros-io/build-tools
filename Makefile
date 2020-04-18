@@ -16,8 +16,12 @@ ifndef DOCKER_HUB_REPO
 	DOCKER_HUB_REPO := mineiros/build-tools
 endif
 
-ifndef DOCKER_IMAGE_VERSION
-	DOCKER_IMAGE_VERSION := latest
+ifndef DOCKER_IMAGE_TAG
+	DOCKER_IMAGE_TAG := latest
+endif
+
+ifndef DOCKER_IMAGE_ADDITIONAL_TAG
+	DOCKER_IMAGE_ADDITIONAL_TAG := latest
 endif
 
 ifndef DOCKER_SOCKET
@@ -53,19 +57,19 @@ help:
 
 ## Build the docker image
 docker/build:
-	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} .
+	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
 
-## Create a new tag ( expects the "DOCKER_IMAGE_VERSION" environment variable to be set )
+## Create a new tag ( expects the "DOCKER_IMAGE_ADDITIONAL_TAG" environment variable to be set )
 docker/tag:
-	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION}
+	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_ADDITIONAL_TAG}
 
 ## Save the docker image to disk
 docker/save:
-	@docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} > "${DOCKER_IMAGE_VERSION}.tar"
+	@docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > "${DOCKER_IMAGE_TAG}.tar"
 
 ## Load saved image
 docker/load:
-	@docker load < "${DOCKER_IMAGE_VERSION}.tar"
+	@docker load < "${DOCKER_IMAGE_TAG}.tar"
 
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
 docker/login:
@@ -73,7 +77,8 @@ docker/login:
 
 ## Push docker image to hub.docker.com
 docker/push:
-	@docker push ${DOCKER_HUB_REPO}
+	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_TAG}
+	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_ADDITIONAL_TAG}
 
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
 docker/snyk:
@@ -83,6 +88,6 @@ docker/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_VERSION} --file=Dockerfile
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile
 
 .PHONY: help docker/build docker/tag docker/load docker/login docker/push docker/save docker/snyk
