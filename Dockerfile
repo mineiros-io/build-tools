@@ -15,12 +15,10 @@ ENV TF_IN_AUTOMATION="yes"
 ENV CGO_ENABLED=0
 
 # Install dependencies
-RUN apk add --update docker bash git openrc openssh openssl python3
-
+#
 # We run Docker as Docker-out-of-Docker (DooD). DooD is a solution where you run the Docker CLI inside a container,
-# and connect it to the host’s Docker by virtue of mount the /var/run/docker.sock into the container. Docker should be
-# started on container startup.
-RUN rc-update add docker boot
+# and connect it to the host’s Docker by virtue of mount the /var/run/docker.sock into the container.
+RUN apk add --update docker bash git openrc openssh openssl python3
 
 # Install pre-commit framework
 RUN pip3 install pre-commit
