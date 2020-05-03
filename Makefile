@@ -77,8 +77,8 @@ docker/login:
 
 ## Push docker image to hub.docker.com
 docker/push:
-	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_TAG}
-	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_ADDITIONAL_TAG}
+	@docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+	@docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_ADDITIONAL_TAG}
 
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
 docker/snyk:
