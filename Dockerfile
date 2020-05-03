@@ -29,7 +29,8 @@ RUN wget \
     https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
     sed -i '/terraform_.*_linux_amd64.zip/!d' terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
     sha256sum -cs terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin
+    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin && \
+    rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS
 
 # Download Tflint, verify checksum and install to bin dir
 RUN wget \
@@ -37,7 +38,8 @@ RUN wget \
     https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/checksums.txt && \
     sed -i '/.*tflint_linux_amd64.zip/!d' checksums.txt && \
     sha256sum -cs checksums.txt && \
-    unzip tflint_linux_amd64.zip -d /usr/local/bin
+    unzip tflint_linux_amd64.zip -d /usr/local/bin && \
+    rm -f tflint_linux_amd64.zip checksums.txt
 
 # Install golint and goimports that are being by some pre-commit hooks
 RUN go get -u golang.org/x/lint/golint golang.org/x/tools/cmd/goimports
@@ -48,7 +50,9 @@ RUN wget \
     https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_SHA256SUMS && \
     sed -i '/packer_.*_linux_amd64.zip/!d' packer_${PACKER_VERSION}_SHA256SUMS && \
     sha256sum -cs packer_${PACKER_VERSION}_SHA256SUMS && \
-    unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin
+    unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin && \
+    rm -f packer_${PACKER_VERSION}_linux_amd64.zip packer_${PACKER_VERSION}_SHA256SUMS
+
 
 COPY scripts/entrypoint.sh /
 
