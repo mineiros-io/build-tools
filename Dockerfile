@@ -50,6 +50,10 @@ RUN wget \
     sha256sum -cs packer_${PACKER_VERSION}_SHA256SUMS && \
     unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin
 
+COPY scripts/entrypoint.sh /
+
 WORKDIR /app/src
 
-CMD echo "You must call terraform, tflint or packer  commands: e.g. `docker run mineiros/build-tools terraform --version`"
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["echo", "You must call terraform, tflint or packer  commands: e.g. `docker run mineiros/build-tools terraform --version`"]
