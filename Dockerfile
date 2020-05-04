@@ -2,9 +2,26 @@ FROM golang:1.14.2-alpine3.11
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
+# Terraform https://www.terraform.io/
 ENV TERRAFORM_VERSION=0.12.24
+ENV TERRAFORM_ARCHIVE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_ARCHIVE}
+ENV TERRAFORM_CHECKSUM=terraform_${TERRAFORM_VERSION}_SHA256SUMS
+ENV TERRAFORM_CHECKSUM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_CHECKSUM}
+
+# TFLint https://github.com/terraform-linters/tflint
 ENV TFLINT_VERSION=v0.15.3
+ENV TFLINT_ARCHIVE=tflint_linux_amd64.zip
+ENV TFLINT_URL=https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/${TFLINT_ARCHIVE}
+ENV TFLINT_CHECKSUM=checksums.txt
+ENV TFLINT_CHECKSUM_URL=https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/${TFLINT_CHECKSUM}
+
+# Packer https://www.packer.io/
 ENV PACKER_VERSION=1.5.5
+ENV PACKER_ARCHIVE=packer_${PACKER_VERSION}_linux_amd64.zip
+ENV PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_ARCHIVE}
+ENV PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS
+ENV PACKER_CHECKSUM_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_CHECKSUM}
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
@@ -23,35 +40,35 @@ RUN apk add --update docker bash git openrc openssh openssl python3
 # Install pre-commit framework
 RUN pip3 install pre-commit
 
-# Download terraform, verify checksum and install to bin dir
+# Download Terraform, verify checksum and install to bin dir
 RUN wget \
-    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-    https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-    sed -i '/terraform_.*_linux_amd64.zip/!d' terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-    sha256sum -cs terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin && \
-    rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip terraform_${TERRAFORM_VERSION}_SHA256SUMS
+    $TERRAFORM_URL \
+    $TERRAFORM_CHECKSUM_URL && \
+    sed -i '/terraform_.*_linux_amd64.zip/!d' $TERRAFORM_CHECKSUM && \
+    sha256sum -cs $TERRAFORM_CHECKSUM && \
+    unzip $TERRAFORM_ARCHIVE -d /usr/local/bin && \
+    rm -f $TERRAFORM_ARCHIVE $TERRAFORM_CHECKSUM
 
 # Download Tflint, verify checksum and install to bin dir
 RUN wget \
-    https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_linux_amd64.zip \
-    https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/checksums.txt && \
-    sed -i '/.*tflint_linux_amd64.zip/!d' checksums.txt && \
-    sha256sum -cs checksums.txt && \
-    unzip tflint_linux_amd64.zip -d /usr/local/bin && \
-    rm -f tflint_linux_amd64.zip checksums.txt
+    $TFLINT_URL \
+    $TFLINT_CHECKSUM_URL && \
+    sed -i '/.*tflint_linux_amd64.zip/!d' $TFLINT_CHECKSUM && \
+    sha256sum -cs $TFLINT_CHECKSUM && \
+    unzip $TFLINT_ARCHIVE -d /usr/local/bin && \
+    rm -f $TFLINT_ARCHIVE $TFLINT_CHECKSUM
 
 # Install golint and goimports that are being by some pre-commit hooks
 RUN go get -u golang.org/x/lint/golint golang.org/x/tools/cmd/goimports
 
 # Download Packer, verify checksum and install to bin dir
 RUN wget \
-    https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip \
-    https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_SHA256SUMS && \
-    sed -i '/packer_.*_linux_amd64.zip/!d' packer_${PACKER_VERSION}_SHA256SUMS && \
-    sha256sum -cs packer_${PACKER_VERSION}_SHA256SUMS && \
-    unzip packer_${PACKER_VERSION}_linux_amd64.zip -d /usr/local/bin && \
-    rm -f packer_${PACKER_VERSION}_linux_amd64.zip packer_${PACKER_VERSION}_SHA256SUMS
+    $PACKER_URL \
+    $PACKER_CHECKSUM_URL && \
+    sed -i '/packer_.*_linux_amd64.zip/!d' $PACKER_CHECKSUM && \
+    sha256sum -cs $PACKER_CHECKSUM && \
+    unzip $PACKER_ARCHIVE -d /usr/local/bin && \
+    rm -f $PACKER_ARCHIVE $PACKER_CHECKSUM
 
 
 COPY scripts/entrypoint.sh /
