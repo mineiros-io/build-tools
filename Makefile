@@ -41,6 +41,52 @@ YELLOW := $(shell tput -Txterm setaf 3)
 WHITE  := $(shell tput -Txterm setaf 7)
 RESET  := $(shell tput -Txterm sgr0)
 
+.PHONY: default
+default: help
+
+.PHONY: docker/build
+## Build the docker image
+docker/build:
+	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
+
+.PHONY: docker/tag
+## Create a new tag ( expects the "DOCKER_IMAGE_ADDITIONAL_TAG" environment variable to be set )
+docker/tag:
+	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_ADDITIONAL_TAG}
+
+.PHONY: docker/save
+## Save the docker image to disk
+docker/save:
+	@docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > "${DOCKER_IMAGE_TAG}.tar"
+
+.PHONY: docker/load
+## Load saved image
+docker/load:
+	@docker load < "${DOCKER_IMAGE_TAG}.tar"
+
+.PHONY: docker/login
+## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
+docker/login:
+	@echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
+
+.PHONY: docker/push
+## Push docker image to hub.docker.com
+docker/push:
+	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_TAG}
+	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_ADDITIONAL_TAG}
+
+.PHONY: test/snyk
+## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
+test/snyk:
+	@docker run --rm \
+		-e SNYK_TOKEN \
+		-e SNYK_USER_ID \
+		-e "MONITOR=${SNYK_MONITOR}" \
+		-v "${PWD}:/project" \
+		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile
+
+.PHONY: help
 ## Display help for all targets
 help:
 	@awk '/^[a-zA-Z_0-9%:\\\/-]+:/ { \
@@ -53,41 +99,4 @@ help:
 				printf "  \x1b[32;01m%-35s\x1b[0m %s\n", cmd, msg; \
 			} \
 	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
-
-## Build the docker image
-docker/build:
-	@docker build -t ${DOCKER_HUB_REPO}:latest -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
-
-## Create a new tag ( expects the "DOCKER_IMAGE_ADDITIONAL_TAG" environment variable to be set )
-docker/tag:
-	@docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_ADDITIONAL_TAG}
-
-## Save the docker image to disk
-docker/save:
-	@docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > "${DOCKER_IMAGE_TAG}.tar"
-
-## Load saved image
-docker/load:
-	@docker load < "${DOCKER_IMAGE_TAG}.tar"
-
-## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
-docker/login:
-	@echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin
-
-## Push docker image to hub.docker.com
-docker/push:
-	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_TAG}
-	@docker push ${DOCKER_HUB_REPO}:{DOCKER_IMAGE_ADDITIONAL_TAG}
-
-## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
-docker/snyk:
-	@docker run --rm \
-		-e SNYK_TOKEN \
-		-e SNYK_USER_ID \
-		-e "MONITOR=${SNYK_MONITOR}" \
-		-v "${PWD}:/project" \
-		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile
-
-.PHONY: help docker/build docker/tag docker/load docker/login docker/push docker/save docker/snyk
+	{ lastLine = $$0 }' $(MAKEFILE_LIST)
