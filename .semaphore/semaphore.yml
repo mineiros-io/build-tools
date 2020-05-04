@@ -32,7 +32,7 @@ blocks:
       jobs:
         - name: Run Snyk
           commands:
-            - make docker/snyk
+            - make test/snyk
 
 promotions:
   - name: Docker Hub
