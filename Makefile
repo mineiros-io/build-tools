@@ -50,15 +50,18 @@ docker/build:
 docker/tag:
 	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:latest
 
-.PHONY: docker/save
+.PHONY: semaphore/store
 ## Save the docker image to disk
-docker/save:
-	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > "docker-image.tar"
+semaphore/store:
+	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > docker-image.tar
+	cache store ${DOCKER_IMAGE_TAG} docker-image.tar
+	rm -f docker-image.tar
 
-.PHONY: docker/load
+.PHONY: semaphore/restore
 ## Load saved image
-docker/load:
-	docker load < "docker-image.tar" | cat
+semaphore/restore:
+	cache restore ${DOCKER_IMAGE_TAG}
+	docker load < docker-image.tar | cat
 
 .PHONY: docker/login
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)

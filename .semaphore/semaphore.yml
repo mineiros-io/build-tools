@@ -20,8 +20,7 @@ blocks:
         - name: Build Docker Image
           commands:
             - make docker/build
-            - make docker/save
-            - cache store ${SEMAPHORE_GIT_SHA} docker-image.tar
+            - make semaphore/store
 
   - name: Forensics
     task:
@@ -29,8 +28,7 @@ blocks:
         - name: SNYK_CREDENTIALS
       prologue:
         commands:
-          - cache restore ${SEMAPHORE_GIT_SHA}
-          - make docker/load
+          - make semaphore/restore
       jobs:
         - name: Run Snyk
           commands:
