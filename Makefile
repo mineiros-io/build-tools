@@ -43,18 +43,17 @@ default: help
 .PHONY: docker/build
 ## Build the docker image
 docker/build:
-	docker build -t build-tools:latest .
+	docker build -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
 
 .PHONY: docker/tag
 ## Create a new tag
 docker/tag:
-	docker tag build-tools:latest ${DOCKER_HUB_REPO}:latest
-	docker tag build-tools:latest ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:latest
 
 .PHONY: docker/save
 ## Save the docker image to disk
 docker/save:
-	docker save build-tools > "docker-image.tar"
+	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > "docker-image.tar"
 
 .PHONY: docker/load
 ## Load saved image
@@ -81,7 +80,7 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker build-tools:latest --file=Dockerfile
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile
 
 .PHONY: help
 ## Display help for all targets
