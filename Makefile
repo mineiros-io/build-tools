@@ -50,6 +50,17 @@ docker/build:
 docker/tag:
 	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:latest
 
+.PHONY: docker/login
+## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
+docker/login:
+	@docker login -u ${DOCKER_HUB_USER} --password-stdin <<<"${DOCKER_HUB_PASSWORD}"
+
+.PHONY: docker/push
+## Push docker image to hub.docker.com
+docker/push:
+	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
+	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
+
 .PHONY: semaphore/store
 ## Save the docker image to disk
 semaphore/store:
@@ -62,17 +73,6 @@ semaphore/store:
 semaphore/restore:
 	cache restore ${DOCKER_IMAGE_TAG}
 	docker load < docker-image.tar | cat
-
-.PHONY: docker/login
-## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
-docker/login:
-	@docker login -u ${DOCKER_HUB_USER} --password-stdin <<<"${DOCKER_HUB_PASSWORD}"
-
-.PHONY: docker/push
-## Push docker image to hub.docker.com
-docker/push:
-	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
-	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
 
 .PHONY: test/snyk
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
