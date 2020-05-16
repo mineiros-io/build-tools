@@ -6,15 +6,21 @@ agent:
     os_image: ubuntu1804
 
 global_job_config:
+  env_vars:
+    - name: CACHE_BASE_DIR
+      value: cache
   prologue:
     commands:
       - checkout --use-cache
       - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
+      - echo CACHE_BASE_DIR=${CACHE_BASE_DIR}
       - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
       - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
+      - echo SEMAPHORE_GIT_TAG_NAME=${SEMAPHORE_GIT_TAG_NAME}
 
 blocks:
   - name: Build
+    dependencies: []
     task:
       jobs:
         - name: Build Docker Image
@@ -22,10 +28,11 @@ blocks:
             - if ! cache has_key ${SEMAPHORE_GIT_SHA} ; then
                 make docker/build ;
                 make docker/save ;
-                cache store ${SEMAPHORE_GIT_SHA} cache ;
+                cache store ${SEMAPHORE_GIT_SHA} ${CACHE_BASE_DIR} ;
               fi
 
   - name: Forensics
+    dependencies: [ "Build" ]
     task:
       secrets:
         - name: SNYK_CREDENTIALS

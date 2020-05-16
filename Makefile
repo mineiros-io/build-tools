@@ -1,41 +1,20 @@
 # Set default shell to bash
 SHELL := /bin/bash
 
-BUILD_TOOLS_DOCKER_REPO = mineiros/build-tools
+DOCKER_HUB_REPO ?= mineiros/build-tools
+DOCKER_IMAGE_TAG ?= build
+DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 
-# Set default value for environment variable if there aren't set already
-ifndef BUILD_TOOLS_VERSION
-	BUILD_TOOLS_VERSION := latest
-endif
+DOCKER_SOCKET ?= /var/run/docker.sock
 
-ifndef BUILD_TOOLS_DOCKER_IMAGE
-	BUILD_TOOLS_DOCKER_IMAGE := ${BUILD_TOOLS_DOCKER_REPO}:${BUILD_TOOLS_VERSION}
-endif
+SNYK_MONITOR ?= true
+SNYK_CLI_DOCKER_IMAGE ?= snyk/snyk-cli:1.305.1-docker
 
-ifndef DOCKER_HUB_REPO
-	DOCKER_HUB_REPO := mineiros/build-tools
-endif
+CACHE_BASE_DIR ?= cache
+CACHE_FILE ?= ${CACHE_BASE_DIR}/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
 
-ifndef DOCKER_IMAGE_TAG
-	DOCKER_IMAGE_TAG := latest
-endif
-
-ifndef DOCKER_SOCKET
-	DOCKER_SOCKET := /var/run/docker.sock
-endif
-
-ifndef SNYK_MONITOR
-	SNYK_MONITOR := true
-endif
-
-ifndef SNYK_CLI_DOCKER_IMAGE
-	SNYK_CLI_DOCKER_IMAGE := snyk/snyk-cli:1.305.1-docker
-endif
-
-GREEN  := $(shell tput -Txterm setaf 2)
-YELLOW := $(shell tput -Txterm setaf 3)
-WHITE  := $(shell tput -Txterm setaf 7)
-RESET  := $(shell tput -Txterm sgr0)
+GREEN := $(shell tput -Txterm setaf 2)
+RESET := $(shell tput -Txterm sgr0)
 
 .PHONY: default
 default: help
@@ -43,12 +22,12 @@ default: help
 .PHONY: docker/build
 ## Build the docker image
 docker/build:
-	docker build -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} .
+	docker build -t ${DOCKER_IMAGE} . | cat
 
 .PHONY: docker/tag
 ## Create a new tag
 docker/tag:
-	docker tag ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_REPO}:latest
+	docker tag ${DOCKER_IMAGE} ${DOCKER_HUB_REPO}:latest
 
 .PHONY: docker/login
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
@@ -59,18 +38,18 @@ docker/login:
 ## Push docker image to hub.docker.com
 docker/push:
 	if [[ "${DOCKER_IMAGE_TAG}" == v[0-9]* ]] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
-	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
+	docker push ${DOCKER_IMAGE} | cat
 
 .PHONY: docker/save
 ## Save the docker image to disk
 docker/save:
-	mkdir -p cache/${DOCKER_HUB_REPO}
-	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > cache/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
+	mkdir -p $(shell dirname ${CACHE_FILE})
+	docker save ${DOCKER_IMAGE} > "${CACHE_FILE}"
 
 .PHONY: docker/load
 ## Load saved image
 docker/load:
-	docker load < cache/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar | cat
+	docker load < "${CACHE_FILE}" | cat
 
 .PHONY: test/snyk
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
@@ -81,7 +60,7 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile | cat
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_IMAGE} --file=Dockerfile | cat
 
 .PHONY: help
 ## Display help for all targets
@@ -93,7 +72,7 @@ help:
 				msg = substr(lastLine, RSTART + 3, RLENGTH); \
 				gsub("\\\\", "", cmd); \
 				gsub(":+$$", "", cmd); \
-				printf "  \x1b[32;01m%-35s\x1b[0m %s\n", cmd, msg; \
+				printf "  ${GREEN}make %-15s${RESET} %s\n", cmd, msg; \
 			} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
