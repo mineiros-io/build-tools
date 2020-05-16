@@ -12,9 +12,10 @@ blocks:
       prologue:
         commands:
           - checkout --use-cache
-          - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_SHA:0:7}
-          - cache restore ${DOCKER_IMAGE_TAG}
-          - make docker/load
+          - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
+          - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
+          - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
+          - make semaphore/restore
           - make docker/login
       jobs:
         - name: "Push Image"

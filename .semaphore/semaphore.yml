@@ -8,8 +8,10 @@ agent:
 global_job_config:
   prologue:
     commands:
-      - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_SHA:0:7}
       - checkout --use-cache
+      - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
+      - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
+      - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
 
 blocks:
   - name: Build
@@ -18,8 +20,7 @@ blocks:
         - name: Build Docker Image
           commands:
             - make docker/build
-            - make docker/save
-            - cache store ${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_TAG}.tar
+            - make semaphore/store
 
   - name: Forensics
     task:
@@ -27,8 +28,7 @@ blocks:
         - name: SNYK_CREDENTIALS
       prologue:
         commands:
-          - cache restore ${DOCKER_IMAGE_TAG}
-          - make docker/load
+          - make semaphore/restore
       jobs:
         - name: Run Snyk
           commands:
