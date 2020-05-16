@@ -58,7 +58,7 @@ docker/save:
 .PHONY: docker/load
 ## Load saved image
 docker/load:
-	docker load < "docker-image.tar"
+	docker load < "docker-image.tar" | cat
 
 .PHONY: docker/login
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
@@ -68,8 +68,8 @@ docker/login:
 .PHONY: docker/push
 ## Push docker image to hub.docker.com
 docker/push:
-	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest ; fi
-	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
+	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
 
 .PHONY: test/snyk
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
@@ -80,7 +80,7 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} --file=Dockerfile | cat
 
 .PHONY: help
 ## Display help for all targets
