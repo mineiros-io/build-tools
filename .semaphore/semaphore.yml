@@ -19,8 +19,11 @@ blocks:
       jobs:
         - name: Build Docker Image
           commands:
-            - make docker/build
-            - make semaphore/store
+            - if ! cache has_key ${SEMAPHORE_GIT_SHA} ; then
+                make docker/build ;
+                make docker/save ;
+                cache store ${SEMAPHORE_GIT_SHA} cache ;
+              fi
 
   - name: Forensics
     task:
@@ -28,7 +31,8 @@ blocks:
         - name: SNYK_CREDENTIALS
       prologue:
         commands:
-          - make semaphore/restore
+          - cache restore ${SEMAPHORE_GIT_SHA}
+          - make docker/load
       jobs:
         - name: Run Snyk
           commands:

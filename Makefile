@@ -61,18 +61,16 @@ docker/push:
 	if [[ "${DOCKER_IMAGE_TAG}" == v[0-9]* ]] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
 	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
 
-.PHONY: semaphore/store
+.PHONY: docker/save
 ## Save the docker image to disk
-semaphore/store:
-	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > docker-image.tar
-	cache store ${DOCKER_IMAGE_TAG} docker-image.tar
-	rm -f docker-image.tar
+docker/save:
+	mkdir -p cache/${DOCKER_HUB_REPO}
+	docker save ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} > cache/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
 
-.PHONY: semaphore/restore
+.PHONY: docker/load
 ## Load saved image
-semaphore/restore:
-	cache restore ${DOCKER_IMAGE_TAG}
-	docker load < docker-image.tar | cat
+docker/load:
+	docker load < cache/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar | cat
 
 .PHONY: test/snyk
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )

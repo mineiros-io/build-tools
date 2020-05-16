@@ -15,7 +15,8 @@ blocks:
           - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
           - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
           - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
-          - make semaphore/restore
+          - cache restore ${SEMAPHORE_GIT_SHA}
+          - make docker/load
           - make docker/login
       jobs:
         - name: "Push Image"
