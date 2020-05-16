@@ -58,7 +58,7 @@ docker/login:
 .PHONY: docker/push
 ## Push docker image to hub.docker.com
 docker/push:
-	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
+	if [[ "${DOCKER_IMAGE_TAG}" == v[0-9]* ]] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
 	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} | cat
 
 .PHONY: semaphore/store
