@@ -69,7 +69,7 @@ docker/login:
 .PHONY: docker/push
 ## Push docker image to hub.docker.com
 docker/push:
-	docker push ${DOCKER_HUB_REPO}:latest
+	if [ "${DOCKER_IMAGE_TAG:0:1}" == "v" ] ; then docker push ${DOCKER_HUB_REPO}:latest ; fi
 	docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 
 .PHONY: test/snyk
