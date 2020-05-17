@@ -23,6 +23,28 @@ PACKER_VERSION = 1.5.6
 .PHONY: default
 default: help
 
+.PHONY: check/updates
+## check for updates
+check/updates: TFLINT_LATEST=$(shell curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
+check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
+check/updates:
+	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
+	  echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available to terraform ${TERRAFORM_LATEST}${RESET}" ; \
+	else \
+	  echo "${GREEN}terraform ${TERRAFORM_VERSION} - terraform is up to date.${RESET}" ; \
+	fi
+	@if [ "${PACKER_VERSION}" != "${PACKER_LATEST}" ] ; then \
+	  echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available to packer ${PACKER_LATEST}${RESET}" ; \
+	else \
+	  echo "${GREEN}packer ${PACKER_VERSION} - packer is up to date.${RESET}" ; \
+	fi
+	@if [ "v${TFLINT_VERSION}" != "${TFLINT_LATEST}" ] ; then \
+	  echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available to tflint ${TFLINT_LATEST}${RESET}" ; \
+	else \
+	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
+	fi
+
 .PHONY: docker/build
 ## Build the docker image
 docker/build:
