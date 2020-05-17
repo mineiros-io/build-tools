@@ -4,6 +4,18 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+
+global_job_config:
+  prologue:
+    commands:
+      - checkout --use-cache
+      - export CACHE_FILE=cache/${SEMAPHORE_GIT_SHA}.tar
+      - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
+      - echo CACHE_FILE=${CACHE_FILE}
+      - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
+      - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
+      - echo SEMAPHORE_GIT_TAG_NAME=${SEMAPHORE_GIT_TAG_NAME}
+
 blocks:
   - name: "Push Image to Docker Hub"
     task:
@@ -11,12 +23,8 @@ blocks:
         - name: DOCKER_HUB_CREDENTIALS
       prologue:
         commands:
-          - checkout --use-cache
-          - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
-          - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
-          - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
           - cache restore ${SEMAPHORE_GIT_SHA}
-          - make docker/load
+          - make docker/load CACHE_FILE=${CACHE_FILE}
           - make docker/login
       jobs:
         - name: "Push Image"
