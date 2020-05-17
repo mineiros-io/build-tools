@@ -3,21 +3,21 @@ FROM golang:1.14.2-alpine3.11
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
 # Terraform https://www.terraform.io/
-ARG TERRAFORM_VERSION=0.12.24
+ARG TERRAFORM_VERSION
 ARG TERRAFORM_ARCHIVE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_ARCHIVE}
 ARG TERRAFORM_CHECKSUM=terraform_${TERRAFORM_VERSION}_SHA256SUMS
 ARG TERRAFORM_CHECKSUM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_CHECKSUM}
 
 # TFLint https://github.com/terraform-linters/tflint
-ARG TFLINT_VERSION=v0.15.3
+ARG TFLINT_VERSION
 ARG TFLINT_ARCHIVE=tflint_linux_amd64.zip
-ARG TFLINT_URL=https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/${TFLINT_ARCHIVE}
+ARG TFLINT_URL=https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/${TFLINT_ARCHIVE}
 ARG TFLINT_CHECKSUM=checksums.txt
-ARG TFLINT_CHECKSUM_URL=https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/${TFLINT_CHECKSUM}
+ARG TFLINT_CHECKSUM_URL=https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/${TFLINT_CHECKSUM}
 
 # Packer https://www.packer.io/
-ARG PACKER_VERSION=1.5.6
+ARG PACKER_VERSION
 ARG PACKER_ARCHIVE=packer_${PACKER_VERSION}_linux_amd64.zip
 ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_ARCHIVE}
 ARG PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS

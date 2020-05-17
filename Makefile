@@ -16,13 +16,21 @@ CACHE_FILE ?= ${CACHE_BASE_DIR}/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
 GREEN := $(shell tput -Txterm setaf 2)
 RESET := $(shell tput -Txterm sgr0)
 
+TERRAFORM_VERSION = 0.12.24
+TFLINT_VERSION = 0.15.3
+PACKER_VERSION = 1.5.6
+
 .PHONY: default
 default: help
 
 .PHONY: docker/build
 ## Build the docker image
 docker/build:
-	docker build -t ${DOCKER_IMAGE} . | cat
+	docker build \
+	  --build-arg TERRAFORM_VERSION=${TERRAFORM_VERSION} \
+	  --build-arg PACKER_VERSION=${PACKER_VERSION} \
+	  --build-arg TFLINT_VERSION=${TFLINT_VERSION} \
+	  -t ${DOCKER_IMAGE} . | cat
 
 .PHONY: docker/tag
 ## Create a new tag
