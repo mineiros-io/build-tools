@@ -23,6 +23,9 @@ ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_
 ARG PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS
 ARG PACKER_CHECKSUM_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_CHECKSUM}
 
+# pre-commit
+ARG PRECOMMIT_VERSION
+
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
 # execute Terraform commands, like in CI systems or other wrapping applications.
@@ -38,7 +41,7 @@ ENV CGO_ENABLED=0
 RUN apk add --update docker bash git openrc openssh openssl python3
 
 # Install pre-commit framework
-RUN pip3 install pre-commit
+RUN pip3 install pre-commit==$PRECOMMIT_VERSION
 
 # Download Terraform, verify checksum and install to bin dir
 RUN wget \
