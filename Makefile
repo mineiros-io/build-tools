@@ -13,8 +13,12 @@ SNYK_CLI_DOCKER_IMAGE ?= snyk/snyk-cli:1.305.1-docker
 CACHE_BASE_DIR ?= cache
 CACHE_FILE ?= ${CACHE_BASE_DIR}/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
 
-GREEN := $(shell tput -Txterm setaf 2)
-RESET := $(shell tput -Txterm sgr0)
+ifndef NOCOLOR
+	RED    := $(shell tput -Txterm setaf 1)
+	GREEN  := $(shell tput -Txterm setaf 2)
+	YELLOW := $(shell tput -Txterm setaf 3)
+	RESET  := $(shell tput -Txterm sgr0)
+endif
 
 TERRAFORM_VERSION = 0.12.24
 TFLINT_VERSION = 0.15.3
