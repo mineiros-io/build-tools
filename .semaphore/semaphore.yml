@@ -30,6 +30,9 @@ blocks:
                 make docker/save ;
                 cache store ${SEMAPHORE_GIT_SHA} ${CACHE_BASE_DIR} ;
               fi
+        - name: Check Versions
+          commands:
+            - make check/updates
 
   - name: Forensics
     dependencies: [ "Build" ]
