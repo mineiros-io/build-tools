@@ -1,6 +1,11 @@
 # Set default shell to bash
 SHELL := /bin/bash
 
+TERRAFORM_VERSION = 0.12.25
+TFLINT_VERSION = 0.16.0
+PACKER_VERSION = 1.5.6
+PRECOMMIT_VERSION = 2.4.0
+
 DOCKER_HUB_REPO ?= mineiros/build-tools
 DOCKER_IMAGE_TAG ?= build
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
@@ -19,11 +24,6 @@ ifndef NOCOLOR
 	YELLOW := $(shell tput -Txterm setaf 3)
 	RESET  := $(shell tput -Txterm sgr0)
 endif
-
-TERRAFORM_VERSION = 0.12.24
-TFLINT_VERSION = 0.15.3
-PACKER_VERSION = 1.5.6
-PRECOMMIT_VERSION = 2.4.0
 
 .PHONY: default
 default: help
