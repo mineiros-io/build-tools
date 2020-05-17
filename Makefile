@@ -105,6 +105,16 @@ test/snyk:
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
 		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_IMAGE} --file=Dockerfile | cat
 
+.PHONY: test/snyk
+## Check if all build tools execute without issues
+test/execute-tools:
+	docker run --rm ${DOCKER_IMAGE} terraform --version
+	docker run --rm ${DOCKER_IMAGE} packer --version
+	docker run --rm ${DOCKER_IMAGE} tflint --version
+	docker run --rm ${DOCKER_IMAGE} pre-commit --version
+	docker run --rm ${DOCKER_IMAGE} golint
+	docker run --rm ${DOCKER_IMAGE} goimports
+
 .PHONY: help
 ## Display help for all targets
 help:
@@ -115,7 +125,7 @@ help:
 				msg = substr(lastLine, RSTART + 3, RLENGTH); \
 				gsub("\\\\", "", cmd); \
 				gsub(":+$$", "", cmd); \
-				printf "  ${GREEN}make %-15s${RESET} %s\n", cmd, msg; \
+				printf "  ${GREEN}make %-20s${RESET} %s\n", cmd, msg; \
 			} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)

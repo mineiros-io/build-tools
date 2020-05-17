@@ -47,6 +47,9 @@ blocks:
         - name: Run Snyk
           commands:
             - make test/snyk
+        - name: Run Tools
+          commands:
+            - make test/execute-tools
 
 promotions:
   - name: Docker Hub
