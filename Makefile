@@ -1,5 +1,5 @@
 # Set default shell to bash
-SHELL := /bin/bash
+SHELL := /bin/bash -o pipefail
 
 TERRAFORM_VERSION = 0.12.25
 TFLINT_VERSION = 0.16.0
