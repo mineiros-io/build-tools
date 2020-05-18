@@ -7,8 +7,9 @@ PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
-DOCKER_IMAGE_TAG ?= build
+DOCKER_IMAGE_TAG ?= latest
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
+BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
 
 DOCKER_SOCKET ?= /var/run/docker.sock
 
@@ -65,12 +66,13 @@ docker/build:
 	  --build-arg PACKER_VERSION=${PACKER_VERSION} \
 	  --build-arg TFLINT_VERSION=${TFLINT_VERSION} \
 	  --build-arg PRECOMMIT_VERSION=${PRECOMMIT_VERSION} \
-	  -t ${DOCKER_IMAGE} . | cat
+	  -t ${BUILD_IMAGE} . | cat
 
 .PHONY: docker/tag
 ## Create a new tag
 docker/tag:
-	docker tag ${DOCKER_IMAGE} ${DOCKER_HUB_REPO}:latest
+	docker tag ${BUILD_IMAGE} ${DOCKER_IMAGE}
+	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:latest
 
 .PHONY: docker/login
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
@@ -87,7 +89,7 @@ docker/push:
 ## Save the docker image to disk
 docker/save:
 	mkdir -p $(shell dirname ${CACHE_FILE})
-	docker save ${DOCKER_IMAGE} > "${CACHE_FILE}"
+	docker save ${BUILD_IMAGE} > "${CACHE_FILE}"
 
 .PHONY: docker/load
 ## Load saved image
@@ -103,17 +105,17 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${DOCKER_IMAGE} --file=Dockerfile | cat
+		${SNYK_CLI_DOCKER_IMAGE} test --docker ${BUILD_IMAGE} --file=Dockerfile | cat
 
 .PHONY: test/snyk
 ## Check if all build tools execute without issues
 test/execute-tools:
-	docker run --rm ${DOCKER_IMAGE} terraform --version
-	docker run --rm ${DOCKER_IMAGE} packer --version
-	docker run --rm ${DOCKER_IMAGE} tflint --version
-	docker run --rm ${DOCKER_IMAGE} pre-commit --version
-	docker run --rm ${DOCKER_IMAGE} golint
-	docker run --rm ${DOCKER_IMAGE} goimports
+	docker run --rm ${BUILD_IMAGE} terraform --version
+	docker run --rm ${BUILD_IMAGE} packer --version
+	docker run --rm ${BUILD_IMAGE} tflint --version
+	docker run --rm ${BUILD_IMAGE} pre-commit --version
+	docker run --rm ${BUILD_IMAGE} golint
+	docker run --rm ${BUILD_IMAGE} goimports
 
 .PHONY: help
 ## Display help for all targets

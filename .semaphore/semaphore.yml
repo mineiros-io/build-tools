@@ -6,14 +6,12 @@ agent:
     os_image: ubuntu1804
 
 global_job_config:
-  env_vars:
-    - name: CACHE_BASE_DIR
-      value: cache
   prologue:
     commands:
       - checkout --use-cache
+      - export CACHE_FILE=cache/${SEMAPHORE_GIT_SHA}.tar
       - export DOCKER_IMAGE_TAG=${SEMAPHORE_GIT_TAG_NAME:-${SEMAPHORE_GIT_SHA}}
-      - echo CACHE_BASE_DIR=${CACHE_BASE_DIR}
+      - echo CACHE_FILE=${CACHE_FILE}
       - echo DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}
       - echo SEMAPHORE_GIT_SHA=${SEMAPHORE_GIT_SHA}
       - echo SEMAPHORE_GIT_TAG_NAME=${SEMAPHORE_GIT_TAG_NAME}
@@ -27,10 +25,15 @@ blocks:
           commands:
             - if ! cache has_key ${SEMAPHORE_GIT_SHA} ; then
                 make docker/build ;
-                make docker/save ;
-                cache store ${SEMAPHORE_GIT_SHA} ${CACHE_BASE_DIR} ;
+                make docker/save CACHE_FILE=${CACHE_FILE} ;
+                cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
               fi
-        - name: Check Versions
+
+  - name: Check Versions
+    dependencies: []
+    task:
+      jobs:
+        - name: Check for Updates
           commands:
             - make check/updates
 
@@ -42,7 +45,7 @@ blocks:
       prologue:
         commands:
           - cache restore ${SEMAPHORE_GIT_SHA}
-          - make docker/load
+          - make docker/load CACHE_FILE=${CACHE_FILE}
       jobs:
         - name: Run Snyk
           commands:
