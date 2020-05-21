@@ -1,5 +1,10 @@
 #!/bin/bash
 
-HOME=/tmp
+if [ -n "${USER_UID}" ] ; then
+  adduser -u ${USER_UID} -D user
+  install -m 700 -o user -g user -d /home/user/.ssh
+  install -m 600 -o user -g user /root/.ssh/known_hosts /home/user/.ssh
+  exec su user -s /bin/bash -c "${*}"
+fi
 
-exec "${@}"
+exec /bin/bash -c "${*}"

@@ -76,6 +76,9 @@ RUN wget \
 
 COPY scripts/entrypoint.sh /
 
+RUN install -m 0755 -d /root/.ssh
+RUN ssh-keyscan -H github.com  >>/root/.ssh/known_hosts
+
 WORKDIR /app/src
 
 ENTRYPOINT ["/entrypoint.sh"]
