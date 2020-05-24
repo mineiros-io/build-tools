@@ -1,10 +1,11 @@
 #!/bin/bash
 
 if [ -n "${USER_UID}" ] ; then
-  adduser -u ${USER_UID} -D user
+  adduser -u ${USER_UID} --shell /bin/bash -D user
   install -m 700 -o user -g user -d /home/user/.ssh
   install -m 600 -o user -g user /root/.ssh/known_hosts /home/user/.ssh
-  exec su user -s /bin/bash -c "${*}"
+
+  exec su user -c "${*@Q}"
 fi
 
-exec /bin/bash -c "${*}"
+exec "${@}"
