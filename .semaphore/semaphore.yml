@@ -29,18 +29,7 @@ blocks:
               cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
               fi
 
-  - name: "Tests"
-    dependencies: []
-    task:
-      jobs:
-        - name: "Pre Commit Hooks"
-          commands:
-            - make test/pre-commit
-        - name: Check for Updates
-          commands:
-            - make check/updates
-
-  - name: Forensics
+  - name: Test
     dependencies: ["Build"]
     task:
       secrets:
@@ -50,12 +39,18 @@ blocks:
           - cache restore ${SEMAPHORE_GIT_SHA}
           - make docker/load CACHE_FILE=${CACHE_FILE}
       jobs:
-        - name: Run Snyk
+        - name: Run Snyk.io Forensics
           commands:
             - make test/snyk
         - name: Run Tools
           commands:
             - make test/execute-tools
+        - name: "Pre Commit Hooks"
+          commands:
+            - make test/pre-commit
+        - name: Check for Updates
+          commands:
+            - make check/updates
 
 promotions:
   - name: Docker Hub

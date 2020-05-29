@@ -1,11 +1,16 @@
 # Set default shell to bash
 SHELL := /bin/bash -o pipefail
 
+ifdef CI
+	V ?= 1
+endif
+
 TERRAFORM_VERSION = 0.12.26
 TFLINT_VERSION = 0.16.0
 PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
 GOLANGCI_LINT_VERSION = 1.27.0
+SNYK_VERSION = 1.332.1
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 DOCKER_IMAGE_TAG ?= latest
@@ -15,7 +20,7 @@ BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
 DOCKER_SOCKET ?= /var/run/docker.sock
 
 SNYK_MONITOR ?= true
-SNYK_CLI_DOCKER_IMAGE ?= snyk/snyk-cli:1.305.1-docker
+SNYK_CLI_DOCKER_IMAGE ?= snyk/snyk-cli:${SNYK_VERSION}-docker
 
 CACHE_BASE_DIR ?= cache
 CACHE_FILE ?= ${CACHE_BASE_DIR}/${DOCKER_HUB_REPO}/${DOCKER_IMAGE_TAG}.tar
@@ -27,12 +32,18 @@ ifndef NOCOLOR
 	RESET  := $(shell tput -Txterm sgr0)
 endif
 
+DOCKER_RUN_FLAGS += --rm
+DOCKER_RUN_FLAGS += -v ${PWD}:/app/src
+DOCKER_RUN_FLAGS += -e USER_UID=$(shell id -u)
+
+DOCKER_FLAGS   += ${DOCKER_RUN_FLAGS}
+DOCKER_RUN_CMD  = docker run ${DOCKER_FLAGS} ${BUILD_IMAGE}
+
 .PHONY: default
 default: help
 
-.PHONY: check/updates
-
 ## check for updates
+.PHONY: check/updates
 check/updates: PRECOMMIT_LATEST=$(shell curl -s "https://api.github.com/repos/pre-commit/pre-commit/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: TFLINT_LATEST=$(shell curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
@@ -68,8 +79,8 @@ check/updates:
 	  echo "${GREEN}pre-commit ${PRECOMMIT_VERSION} - pre-commit is up to date.${RESET}" ; \
 	fi
 
-.PHONY: docker/build
 ## Build the docker image
+.PHONY: docker/build
 docker/build:
 	docker build \
 	  --build-arg TERRAFORM_VERSION=${TERRAFORM_VERSION} \
@@ -79,36 +90,36 @@ docker/build:
       --build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
 	  -t ${BUILD_IMAGE} . | cat
 
-.PHONY: docker/tag
 ## Create a new tag
+.PHONY: docker/tag
 docker/tag:
 	docker tag ${BUILD_IMAGE} ${DOCKER_IMAGE}
 	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:latest
 
-.PHONY: docker/login
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
+.PHONY: docker/login
 docker/login:
 	@docker login -u ${DOCKER_HUB_USER} --password-stdin <<<"${DOCKER_HUB_PASSWORD}"
 
-.PHONY: docker/push
 ## Push docker image to hub.docker.com
+.PHONY: docker/push
 docker/push:
 	if [[ "${DOCKER_IMAGE_TAG}" == v[0-9]* ]] ; then docker push ${DOCKER_HUB_REPO}:latest | cat ; fi
 	docker push ${DOCKER_IMAGE} | cat
 
-.PHONY: docker/save
 ## Save the docker image to disk
+.PHONY: docker/save
 docker/save:
 	mkdir -p $(shell dirname ${CACHE_FILE})
 	docker save ${BUILD_IMAGE} > "${CACHE_FILE}"
 
-.PHONY: docker/load
 ## Load saved image
+.PHONY: docker/load
 docker/load:
 	docker load < "${CACHE_FILE}" | cat
 
-.PHONY: test/snyk
 ## Check for vulnerabilities with Snyk.io ( requires the environment variables "SNYK_TOKEN" and "USER_ID" to be set )
+.PHONY: test/snyk
 test/snyk:
 	docker run --rm \
 		-e SNYK_TOKEN \
@@ -118,8 +129,13 @@ test/snyk:
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
 		${SNYK_CLI_DOCKER_IMAGE} test --docker ${BUILD_IMAGE} --file=Dockerfile | cat
 
-.PHONY: test/snyk
+## Run the pre-commit hooks inside build-tools docker
+.PHONY: test/pre-commit
+test/pre-commit:
+	$(call docker-run,pre-commit run -a)
+
 ## Check if all build tools execute without issues
+.PHONY: test/execute-tools
 test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} terraform --version
 	docker run --rm ${BUILD_IMAGE} packer --version
@@ -128,8 +144,8 @@ test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} golint
 	docker run --rm ${BUILD_IMAGE} goimports
 
-.PHONY: help
 ## Display help for all targets
+.PHONY: help
 help:
 	@awk '/^[a-zA-Z_0-9%:\\\/-]+:/ { \
 		msg = match(lastLine, /^## (.*)/); \
@@ -142,3 +158,6 @@ help:
 			} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
+
+quiet-command = $(if ${V},${1},$(if ${2},@echo ${2} && ${1}, @${1}))
+docker-run    = $(call quiet-command,${DOCKER_RUN_CMD} ${1} | cat,"${YELLOW}[DOCKER RUN] ${GREEN}${1}${RESET}")

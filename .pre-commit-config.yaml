@@ -4,4 +4,4 @@ repos:
     hooks:
       - id: phony-targets
       - id: shellcheck
-      - id: markdown-link-check
+      # - id: markdown-link-check
