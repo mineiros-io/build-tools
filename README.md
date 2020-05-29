@@ -9,6 +9,12 @@
 
 A collection of build tools for the Mineiros Infrastructure as Code (IaC) library.
 
+## How to build the docker image
+
+``` shell script
+make docker/build
+```
+
 ## Versioning
 
 This Module follows the principles of [Semantic Versioning (SemVer)](https://semver.org/).
