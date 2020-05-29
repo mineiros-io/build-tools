@@ -5,6 +5,7 @@ TERRAFORM_VERSION = 0.12.26
 TFLINT_VERSION = 0.16.0
 PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
+GOLANGCI_LINT_VERSION = 1.27.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 DOCKER_IMAGE_TAG ?= latest
@@ -34,6 +35,7 @@ default: help
 ## check for updates
 check/updates: PRECOMMIT_LATEST=$(shell curl -s "https://api.github.com/repos/pre-commit/pre-commit/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: TFLINT_LATEST=$(shell curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
 check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
 check/updates:
@@ -52,6 +54,14 @@ check/updates:
 	else \
 	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
 	fi
+    
+	@if [ "${GOLANGCI_LINT_VERSION}" != "${GOLANGCI_LINT_LATEST}" ] ; then \
+	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available to golangci-lint ${GOLANGCI_LINT_LATEST}${RESET}" ; \
+	else \
+	  echo "${GREEN}golangci-lint ${GOLANGCI_LINT_VERSION} - golangci-lint is up to date.${RESET}" ; \
+	fi
+
+
 	@if [ "${PRECOMMIT_VERSION}" != "${PRECOMMIT_LATEST}" ] ; then \
 	  echo "${RED}pre-commit ${PRECOMMIT_VERSION}${YELLOW} - update available to pre-commit ${PRECOMMIT_LATEST}${RESET}" ; \
 	else \
@@ -66,6 +76,7 @@ docker/build:
 	  --build-arg PACKER_VERSION=${PACKER_VERSION} \
 	  --build-arg TFLINT_VERSION=${TFLINT_VERSION} \
 	  --build-arg PRECOMMIT_VERSION=${PRECOMMIT_VERSION} \
+      --build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
 	  -t ${BUILD_IMAGE} . | cat
 
 .PHONY: docker/tag

@@ -23,8 +23,12 @@ ARG PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_
 ARG PACKER_CHECKSUM=packer_${PACKER_VERSION}_SHA256SUMS
 ARG PACKER_CHECKSUM_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_CHECKSUM}
 
-# pre-commit
+# pre-commit https://github.com/pre-commit/pre-commit
 ARG PRECOMMIT_VERSION
+
+# golangci-lint https://github.com/golangci/golangci-lint
+ARG GOLANGCI_LINT_VERSION
+ARG GOLANGCI_LINT_URL=https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
@@ -61,8 +65,13 @@ RUN wget \
     unzip $TFLINT_ARCHIVE -d /usr/local/bin && \
     rm -f $TFLINT_ARCHIVE $TFLINT_CHECKSUM
 
-# Install golint and goimports that are being by some pre-commit hooks
-RUN go get -u golang.org/x/lint/golint golang.org/x/tools/cmd/goimports
+# Install golint, goimports and golangci-lint that are being by some pre-commit hooks
+# Golangci_lint suggests to install the binary through the install script rather than `go get`.
+# For infos please see https://golangci-lint.run/usage/install/#ci-installation
+RUN go get -u \
+    golang.org/x/lint/golint \
+    golang.org/x/tools/cmd/goimports && \
+    wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s "v$GOLANGCI_LINT_VERSION"
 
 # Download Packer, verify checksum and install to bin dir
 RUN wget \
