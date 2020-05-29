@@ -24,21 +24,24 @@ blocks:
         - name: Build Docker Image
           commands:
             - if ! cache has_key ${SEMAPHORE_GIT_SHA} ; then
-                make docker/build ;
-                make docker/save CACHE_FILE=${CACHE_FILE} ;
-                cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
+              make docker/build ;
+              make docker/save CACHE_FILE=${CACHE_FILE} ;
+              cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
               fi
 
-  - name: Check Versions
+  - name: "Tests"
     dependencies: []
     task:
       jobs:
+        - name: "Pre Commit Hooks"
+          commands:
+            - make test/pre-commit
         - name: Check for Updates
           commands:
             - make check/updates
 
   - name: Forensics
-    dependencies: [ "Build" ]
+    dependencies: ["Build"]
     task:
       secrets:
         - name: SNYK_CREDENTIALS
