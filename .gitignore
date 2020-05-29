@@ -53,3 +53,6 @@ snyk_report.css
 snyk_report.html
 
 docker-image.tar
+
+# Snyk.io forensic reports
+snyk*

@@ -1,7 +1,7 @@
 # Set default shell to bash
 SHELL := /bin/bash -o pipefail
 
-TERRAFORM_VERSION = 0.12.25
+TERRAFORM_VERSION = 0.12.26
 TFLINT_VERSION = 0.16.0
 PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
