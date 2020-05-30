@@ -24,21 +24,13 @@ blocks:
         - name: Build Docker Image
           commands:
             - if ! cache has_key ${SEMAPHORE_GIT_SHA} ; then
-                make docker/build ;
-                make docker/save CACHE_FILE=${CACHE_FILE} ;
-                cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
+              make docker/build ;
+              make docker/save CACHE_FILE=${CACHE_FILE} ;
+              cache store ${SEMAPHORE_GIT_SHA} ${CACHE_FILE} ;
               fi
 
-  - name: Check Versions
-    dependencies: []
-    task:
-      jobs:
-        - name: Check for Updates
-          commands:
-            - make check/updates
-
-  - name: Forensics
-    dependencies: [ "Build" ]
+  - name: Test
+    dependencies: ["Build"]
     task:
       secrets:
         - name: SNYK_CREDENTIALS
@@ -47,12 +39,18 @@ blocks:
           - cache restore ${SEMAPHORE_GIT_SHA}
           - make docker/load CACHE_FILE=${CACHE_FILE}
       jobs:
-        - name: Run Snyk
+        - name: Run Snyk.io Forensics
           commands:
             - make test/snyk
         - name: Run Tools
           commands:
             - make test/execute-tools
+        - name: "Pre Commit Hooks"
+          commands:
+            - make test/pre-commit
+        - name: Check for Updates
+          commands:
+            - make check/updates
 
 promotions:
   - name: Docker Hub
