@@ -10,7 +10,14 @@
 
 A collection of build tools for the Mineiros Infrastructure as Code (IaC) library.
 
-- [How to build the docker image](#how-to-build-the-docker-image)
+- [Introduction](#introduction)
+- [Getting started](#getting-started)
+  - [Examples](#examples)
+    - [Terraform init](#terraform-init)
+    - [Work with S3 remote state](#work-with-s3-remote-state)
+    - [Create a Terraform planfile](#create-a-terraform-planfile)
+    - [Apply a Terraform planfile](#apply-a-terraform-planfile)
+    - [Run go fmt on mounted source code](#run-go-fmt-on-mounted-source-code)
 - [Module Versioning](#module-versioning)
   - [Backwards compatibility in `0.0.z` and `0.y.z` version](#backwards-compatibility-in-00z-and-0yz-version)
 - [About Mineiros](#about-mineiros)
@@ -19,10 +26,119 @@ A collection of build tools for the Mineiros Infrastructure as Code (IaC) librar
 - [Makefile Targets](#makefile-targets)
 - [License](#license)
 
-## How to build the docker image
+## Introduction
+
+The main part of **build-tools** is a docker image that comes with install
+instructions for all necessary tools.
+Currently, we are installing the following dependencies:
+
+- [Go](https://golang.org/)
+- [Terraform](https://www.terraform.io/)
+- [Packer](https://www.packer.io/)
+- [Node.js & npm](https://nodejs.org/)
+
+In addition to the above listed technologies, build-tools ships with some
+pre-installed linters, that help you to ensure code quality and standards:
+
+- [Golint](https://github.com/golang/lint)
+- [golangci-lint](https://github.com/golangci/golangci-lint)
+- [Goimports](https://godoc.org/golang.org/x/tools/cmd/goimports)
+- [TFLint](https://github.com/terraform-linters/tflint)
+- [markdown-link-check](https://github.com/tcort/markdown-link-check)
+
+## Getting started
+
+The easiest way to use build-tools is to pull the image from
+[hub.docker.com](https://hub.docker.com/r/mineiros/build-tools).
+
+The following command will pull the image from the registry and runs
+`terraform --version` inside a container.
 
 ```bash
-make docker/build
+docker run --rm \
+  mineiros/build-tools:latest \
+  terraform --version
+```
+
+### Examples
+
+Please see the following examples for common use-cases.
+
+#### Terraform init
+
+Mount the current working diretory as a volume and run `terraform init` to
+initialize the terraform working environment.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  mineiros/build-tools:latest \
+  terraform init
+```
+
+#### Work with S3 remote state
+
+Mount the current working directory as a volume, pass AWS access credentials as
+environment variables and run `terraform init`. Requires
+[S3](https://www.terraform.io/docs/backends/types/s3.html) to be configured as
+the remote state backend.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN \
+  mineiros/build-tools:latest \
+  terraform init
+```
+
+#### Create a Terraform planfile
+
+Mount the current working directory as a volume, pass AWS access credentials as
+environment variables and run `terraform plan --out=plan.tf` for creating a
+plan file that we can use with the `terraform apply` comand.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN \
+  mineiros/build-tools:latest \
+  terraform plan -input=false -out=plan.tf
+```
+
+#### Apply a Terraform planfile
+
+Mount the current working directory as a volume, pass AWS access credentials as
+environment variables and run
+`terraform apply -auto-approve -input=false plan.tf` for applying changes.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN \
+  mineiros/build-tools:latest \
+  terraform apply -input=false -out=plan.tf
+```
+
+#### Run go fmt on mounted source code
+
+Mounts the current working director as a volume and run `go fmt` recursively.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  mineiros/build-tools:latest \
+  go fmt ./...
 ```
 
 ## Module Versioning
