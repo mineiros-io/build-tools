@@ -92,4 +92,4 @@ WORKDIR /app/src
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["echo", "You must call terraform, tflint or packer  commands: e.g. `docker run mineiros/build-tools terraform --version`"]
+CMD ["echo", "You must call terraform, tflint or packer commands: e.g. `docker run mineiros/build-tools terraform --version`"]
