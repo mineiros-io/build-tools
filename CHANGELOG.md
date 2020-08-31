@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Add CHANGELOG.md that follows the keepachangelog standard.
-- Upgrade TfLint to v0.17.0.
-- Upgrade pre-commit to v2.5.1
-- Upgrade Snyk-cli to v1.349.0
-- Upgrade Terraform to v0.12.28
+- Upgrade golangci-lint to v1.30.0
+- Upgrade TfLint to v0.19.1.
+- Upgrade pre-commit to v2.7.1
+- Upgrade Snyk-cli to v1.386.0
+- Upgrade Terraform to v0.13.01
 
 ## [0.5.4] - 2020-06-04
 ### Changed
