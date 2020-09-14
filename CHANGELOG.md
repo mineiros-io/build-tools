@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1]
+### Changed
+- Upgrade Terraform to v0.13.2
+
 ## [0.6.0] - 2020-08-31
 ### Changed
 - Add CHANGELOG.md that follows the keepachangelog standard.
@@ -13,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade TfLint to v0.19.1.
 - Upgrade pre-commit to v2.7.1
 - Upgrade Snyk-cli to v1.386.0
-- Upgrade Terraform to v0.13.01
+- Upgrade Terraform to v0.13.1
 
 ## [0.5.4]
 ### Changed
@@ -130,11 +134,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- References -->
 
 <!-- markdown-link-check-disable -->
-[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.6.0...HEAD
-
-[0.6.0]: https://github.com/mineiros-io/build-tools/compare/v0.5.4...v0.6.0
+[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/mineiros-io/build-tools/compare/v0.6.0...v0.6.1
 <!-- markdown-link-check-enable -->
-
+[0.6.0]: https://github.com/mineiros-io/build-tools/compare/v0.5.4...v0.6.0
 [0.5.4]: https://github.com/mineiros-io/build-tools/compare/v0.5.3...v0.5.4
 [0.5.3]: https://github.com/mineiros-io/build-tools/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/mineiros-io/build-tools/compare/v0.5.1...v0.5.2
