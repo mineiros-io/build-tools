@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade Terraform to v0.13.3
 - Upgrade TfLint to v0.20.1.
+- Upgrade golangci-lint to v1.31.0
 
 ## [0.6.1]
 ### Changed
