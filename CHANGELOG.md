@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0]
+### Changed
+- Upgrade Terraform to v0.14.1
+- Upgrade Packer to v1.6.5
+- Upgrade TfLint to v0.21.0
+- Upgrade golangci-lint to v1.33.0
+- Upgrade pre-commit to v2.9.3
+- Upgrade Docker-base to fix security issues
+
 ## [0.6.3]
 ### Changed
 - Upgrade Terraform to v0.13.4
@@ -146,9 +155,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- References -->
 
 <!-- markdown-link-check-disable -->
-[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.6.3...HEAD
-[0.6.3]: https://github.com/mineiros-io/build-tools/compare/v0.6.2...v0.6.3
+[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/mineiros-io/build-tools/compare/v0.6.3...v0.7.0
 <!-- markdown-link-check-enable -->
+[0.6.3]: https://github.com/mineiros-io/build-tools/compare/v0.6.2...v0.6.3
 [0.6.2]: https://github.com/mineiros-io/build-tools/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/mineiros-io/build-tools/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/mineiros-io/build-tools/compare/v0.5.4...v0.6.0
