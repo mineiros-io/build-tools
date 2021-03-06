@@ -27,8 +27,8 @@ jobs:
       - name: Test docker-image with snyk.io
         run: make test/snyk
       - name: Tag docker-image
-        if: startsWith(github.ref, 'refs/tags/v.')
+        if: startsWith(github.ref, 'refs/tags/v')
         run: make docker/tag
       - name: Push docker-image to Docker Hub
-        if: startsWith(github.ref, 'refs/tags/v.')
+        if: startsWith(github.ref, 'refs/tags/v')
         run: make docker/push
