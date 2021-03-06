@@ -5,7 +5,7 @@ ifdef CI
 	V ?= 1
 endif
 
-TERRAFORM_VERSION = 0.12.26
+TERRAFORM_VERSION = 0.12.30
 TFLINT_VERSION = 0.16.0
 PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
@@ -65,7 +65,7 @@ check/updates:
 	else \
 	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
 	fi
-    
+
 	@if [ "${GOLANGCI_LINT_VERSION}" != "${GOLANGCI_LINT_LATEST}" ] ; then \
 	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available to golangci-lint ${GOLANGCI_LINT_LATEST}${RESET}" ; \
 	else \
