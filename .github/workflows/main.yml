@@ -5,7 +5,7 @@ on: [push]
 env:
   V: "1"
   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  SNYK_USERID: ${{ secrets.SNYK_USERID }}
+  SNYK_USER_ID: ${{ secrets.SNYK_USER_ID }}
   DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
