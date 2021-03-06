@@ -5,7 +5,7 @@ ifdef CI
 	V ?= 1
 endif
 
-TERRAFORM_VERSION = 0.12.26
+TERRAFORM_VERSION = 0.12.30
 TFLINT_VERSION = 0.16.0
 PACKER_VERSION = 1.5.6
 PRECOMMIT_VERSION = 2.4.0
@@ -13,7 +13,21 @@ GOLANGCI_LINT_VERSION = 1.27.0
 SNYK_VERSION = 1.332.1
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
+
+# github magic tagging:
+# if running in github actions and a tag is specified use the tag
+# else if running in github actions and a sha is available use the sha
+# else use "latest"
+ifeq ("$(dir ${GITHUB_REF})", "refs/tags/")
+  DOCKER_IMAGE_TAG=$(notdir ${GITHUB_REF})
+endif
+
+ifdef GITHUB_SHA
+  DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
+endif
+
 DOCKER_IMAGE_TAG ?= latest
+
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
 
@@ -65,7 +79,7 @@ check/updates:
 	else \
 	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
 	fi
-    
+
 	@if [ "${GOLANGCI_LINT_VERSION}" != "${GOLANGCI_LINT_LATEST}" ] ; then \
 	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available to golangci-lint ${GOLANGCI_LINT_LATEST}${RESET}" ; \
 	else \
