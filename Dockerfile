@@ -1,4 +1,4 @@
-FROM golang:1.14.3-alpine3.11
+FROM golang:1.16.0-alpine3.12
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
