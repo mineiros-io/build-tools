@@ -26,7 +26,9 @@ ifdef GITHUB_SHA
   DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
 endif
 
-DOCKER_IMAGE_TAG ?= latest
+LATEST_TAG=v0.5.x
+
+DOCKER_IMAGE_TAG ?= ${LATEST_TAG}
 
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
@@ -108,7 +110,7 @@ docker/build:
 .PHONY: docker/tag
 docker/tag:
 	docker tag ${BUILD_IMAGE} ${DOCKER_IMAGE}
-	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:latest
+	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:${LATEST_TAG}
 
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
 .PHONY: docker/login
