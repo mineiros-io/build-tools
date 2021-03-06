@@ -13,7 +13,21 @@ GOLANGCI_LINT_VERSION = 1.27.0
 SNYK_VERSION = 1.332.1
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
+
+# github magic tagging:
+# if running in github actions and a tag is specified use the tag
+# else if running in github actions and a sha is available use the sha
+# else use "latest"
+ifeq ("$(dir ${GITHUB_REF})", "refs/tags/")
+  DOCKER_IMAGE_TAG=$(notdir ${GITHUB_REF})
+endif
+
+ifdef GITHUB_SHA
+  DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
+endif
+
 DOCKER_IMAGE_TAG ?= latest
+
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
 
