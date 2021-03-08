@@ -13,7 +13,23 @@ GOLANGCI_LINT_VERSION = 1.33.0
 SNYK_VERSION = 1.386.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
-DOCKER_IMAGE_TAG ?= latest
+
+# github magic tagging:
+# if running in github actions and a tag is specified use the tag
+# else if running in github actions and a sha is available use the sha
+# else use "latest"
+ifeq ("$(dir ${GITHUB_REF})", "refs/tags/")
+  DOCKER_IMAGE_TAG=$(notdir ${GITHUB_REF})
+endif
+
+ifdef GITHUB_SHA
+  DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
+endif
+
+LATEST_TAG=latest
+
+DOCKER_IMAGE_TAG ?= ${LATEST_TAG}
+
 DOCKER_IMAGE ?= ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
 BUILD_IMAGE ?= ${DOCKER_HUB_REPO}:build
 
@@ -94,7 +110,7 @@ docker/build:
 .PHONY: docker/tag
 docker/tag:
 	docker tag ${BUILD_IMAGE} ${DOCKER_IMAGE}
-	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:latest
+	docker tag ${BUILD_IMAGE} ${DOCKER_HUB_REPO}:${LATEST_TAG}
 
 ## Login to hub.docker.com ( requires the environment variables "DOCKER_HUB_USER" and "DOCKER_HUB_PASSWORD" to be set)
 .PHONY: docker/login
