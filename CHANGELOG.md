@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Terraform to v0.14.8
 - Upgrade Packer to v1.7.0
 - Upgrade TfLint to v0.25.0
+- Upgrade golangci-lint to v1.38.0
 
 ## [0.7.0]
 ### Changed
