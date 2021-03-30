@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Install Checkov v1.0.844 
+- Install Checkov v1.0.844
+### Changed
+- Upgrade Terraform to v0.14.7
+- Upgrade Packer to v1.7.0
+- Upgrade TfLint to v0.25.0
+- Upgrade golangci-lint to v1.38.0
+- Upgrade pre-commit to v2.11.1
+- Upgrade snyk to v1.507.0
 
 ## [0.7.0]
 ### Changed
