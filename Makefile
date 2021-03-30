@@ -11,6 +11,7 @@ PACKER_VERSION = 1.6.5
 PRECOMMIT_VERSION = 2.9.3
 GOLANGCI_LINT_VERSION = 1.33.0
 SNYK_VERSION = 1.386.0
+CHECKOV_VERSION = 1.0.844
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 
@@ -65,17 +66,20 @@ check/updates: TFLINT_LATEST=$(shell curl -s "https://api.github.com/repos/terra
 check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
 check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
+check/updates: CHECKOV_LATEST=$(shell curl -s "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates:
 	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
 	  echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available to terraform ${TERRAFORM_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}terraform ${TERRAFORM_VERSION} - terraform is up to date.${RESET}" ; \
 	fi
+
 	@if [ "${PACKER_VERSION}" != "${PACKER_LATEST}" ] ; then \
 	  echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available to packer ${PACKER_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}packer ${PACKER_VERSION} - packer is up to date.${RESET}" ; \
 	fi
+
 	@if [ "${TFLINT_VERSION}" != "${TFLINT_LATEST}" ] ; then \
 	  echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available to tflint ${TFLINT_LATEST}${RESET}" ; \
 	else \
@@ -95,6 +99,12 @@ check/updates:
 	  echo "${GREEN}pre-commit ${PRECOMMIT_VERSION} - pre-commit is up to date.${RESET}" ; \
 	fi
 
+	@if [ "${CHECKOV_VERSION}" != "${CHECKOV_LATEST}" ] ; then \
+	  echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available to checkov ${CHECKOV_VERSION}${RESET}" ; \
+	else \
+	  echo "${GREEN}checkov ${CHECKOV_VERSION} - checkov is up to date.${RESET}" ; \
+	fi
+
 ## Build the docker image
 .PHONY: docker/build
 docker/build:
@@ -104,6 +114,7 @@ docker/build:
 	  --build-arg TFLINT_VERSION=${TFLINT_VERSION} \
 	  --build-arg PRECOMMIT_VERSION=${PRECOMMIT_VERSION} \
       --build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
+      --build-arg CHECKOV_VERSION=${CHECKOV_VERSION} \
 	  -t ${BUILD_IMAGE} . | cat
 
 ## Create a new tag
@@ -157,6 +168,7 @@ test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} packer --version
 	docker run --rm ${BUILD_IMAGE} tflint --version
 	docker run --rm ${BUILD_IMAGE} pre-commit --version
+	docker run --rm ${BUILD_IMAGE} checkov --version
 	docker run --rm ${BUILD_IMAGE} golint
 	docker run --rm ${BUILD_IMAGE} goimports
 

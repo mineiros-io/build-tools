@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Install Checkov v1.0.844 
+
 ## [0.7.0]
 ### Changed
 - Upgrade Terraform to v0.14.1

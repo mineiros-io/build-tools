@@ -32,10 +32,14 @@ The main part of **build-tools** is a docker image that comes with install
 instructions for all necessary tools.
 Currently, we are installing the following dependencies:
 
+### Dependencies
+
 - [Go](https://golang.org/)
 - [Terraform](https://www.terraform.io/)
 - [Packer](https://www.packer.io/)
 - [Node.js & npm](https://nodejs.org/)
+
+### Linters
 
 In addition to the above listed technologies, build-tools ships with some
 pre-installed linters, that help you to ensure code quality and standards:
@@ -45,6 +49,13 @@ pre-installed linters, that help you to ensure code quality and standards:
 - [Goimports](https://godoc.org/golang.org/x/tools/cmd/goimports)
 - [TFLint](https://github.com/terraform-linters/tflint)
 - [markdown-link-check](https://github.com/tcort/markdown-link-check)
+
+### Security
+
+This repository ships with some pre-installed open-source software that
+help you to monitor security:
+
+- [Checkov](https://github.com/bridgecrewio/checkov)
 
 ## Getting started
 
@@ -139,6 +150,15 @@ docker run --rm \
   -e USER_UID=$(id -u) \
   mineiros/build-tools:latest \
   go fmt ./...
+```
+
+#### Run checkov on mounted directory
+```bash
+docker run --rm \                                                                                                                                                                                           
+  -v ${PWD}:/app/src \
+  -e USER_UID=$(id -u) \
+  mineiros/build-tools:latest \
+  checkov --directory ./
 ```
 
 ## Module Versioning
