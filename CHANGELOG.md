@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] - 2021-04-14
 ### Added
 - Install Checkov v1.0.844
 ### Changed
@@ -16,7 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.11.1
 - Upgrade snyk to v1.507.0
 
-## [0.7.0]
+## [0.7.1] - 2021-03-06
+### Changed
+- migrated to github actions
+
+## [0.7.0] - 2021-04-14
 ### Changed
 - Upgrade Terraform to v0.14.1
 - Upgrade Packer to v1.6.5
@@ -25,19 +30,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.9.3
 - Upgrade Docker-base to fix security issues
 
-## [0.6.3]
+## [0.6.3] - 2020-10-01
 ### Changed
 - Upgrade Terraform to v0.13.4
 - Upgrade Packer to v1.6.4
 - Upgrade TfLint to v0.20.2
 
-## [0.6.2]
+## [0.6.2] - 2020-09-17
 ### Changed
 - Upgrade Terraform to v0.13.3
 - Upgrade TfLint to v0.20.1.
 - Upgrade golangci-lint to v1.31.0
 
-## [0.6.1]
+## [0.6.1] - 2020-09-14
 ### Changed
 - Upgrade Terraform to v0.13.2
 
@@ -50,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Snyk-cli to v1.386.0
 - Upgrade Terraform to v0.13.1
 
-## [0.5.4]
+## [0.5.4] 2020-05-04
 ### Changed
 - Upgrade pre-commit-hooks to v0.1.4.
 - Update logo and badges in README.md.
@@ -165,7 +170,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- References -->
 
 <!-- markdown-link-check-disable -->
-[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/mineiros-io/build-tools/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/mineiros-io/build-tools/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/mineiros-io/build-tools/compare/v0.6.3...v0.7.0
 <!-- markdown-link-check-enable -->
 [0.6.3]: https://github.com/mineiros-io/build-tools/compare/v0.6.2...v0.6.3
