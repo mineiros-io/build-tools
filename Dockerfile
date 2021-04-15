@@ -50,7 +50,21 @@ ENV CGO_ENABLED=0
 # We run Docker as Docker-out-of-Docker (DooD). DooD is a solution where you run the Docker CLI inside a container,
 # and connect it to the host’s Docker by virtue of mount the /var/run/docker.sock into the container.
 RUN apk upgrade musl
-RUN apk add --no-cache docker bash git make nodejs npm openrc openssh openssl python3 shellcheck py3-pip
+RUN apk add --no-cache \
+    docker \
+    bash \
+    build-base \
+    git \
+    make \
+    nodejs \
+    npm \
+    openrc \
+    openssh \
+    openssl \
+    python3 \
+    python3-dev \
+    py3-pip \
+    shellcheck
 
 # Install pre-commit framework
 RUN pip3 install --ignore-installed pre-commit==$PRECOMMIT_VERSION
