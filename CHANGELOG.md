@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Upgrade TfLint to v0.28.0
+- Upgrade pre-commit to v2.12.1
+- Upgrade snyk to v1.556.0
 
 ## [0.9.0] - 2021-05-04
 ### Changed
