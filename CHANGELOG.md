@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2021-05-04
+### Changed
+- Upgrade Terraform to v0.15.1
+- Upgrade TfLint to v0.28.0
+- Upgrade pre-commit to v2.12.1
+- Upgrade snyk to v1.556.0
+
 ## [0.8.0] - 2021-04-15
 ### Added
 - Add python3-dev to Dockerimage
