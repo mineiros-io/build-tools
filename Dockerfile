@@ -2,7 +2,13 @@ FROM golang:1.16.3-alpine3.12
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
-# Terraform
+# Configure directories and volumes
+ENV BUILD_DIR=/build
+ENV GOPATH=/go
+ENV TF_DATA_DIR=/terraform
+
+VOLUME [$GOPATH, $TF_DATA_DIR]
+
 # https://www.terraform.io/
 ARG TERRAFORM_VERSION
 ARG TERRAFORM_ARCHIVE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
@@ -113,7 +119,7 @@ COPY scripts/entrypoint.sh /
 RUN install -m 0755 -d /root/.ssh
 RUN ssh-keyscan -H github.com  >>/root/.ssh/known_hosts
 
-WORKDIR /app/src
+WORKDIR ${BUILD_DIR}
 
 ENTRYPOINT ["/entrypoint.sh"]
 
