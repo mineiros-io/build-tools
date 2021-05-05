@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade TfLint to v0.28.0
 - Upgrade pre-commit to v2.12.1
 - Upgrade snyk to v1.556.0
-- Configure GOPATH and TF_DATA_DIR and add both as docker volumes
 
 ## [0.8.1] - 2021-05-05
 ### Added

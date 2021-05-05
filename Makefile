@@ -14,7 +14,6 @@ CHECKOV_VERSION = 2.0.46
 SNYK_VERSION = 1.556.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
-
 # github magic tagging:
 # if running in github actions and a tag is specified use the tag
 # else if running in github actions and a sha is available use the sha
@@ -50,7 +49,7 @@ ifndef NOCOLOR
 endif
 
 DOCKER_RUN_FLAGS += --rm
-DOCKER_RUN_FLAGS += -v ${PWD}:/app/src
+DOCKER_RUN_FLAGS += -v ${PWD}:/build
 DOCKER_RUN_FLAGS += -e USER_UID=$(shell id -u)
 
 DOCKER_FLAGS   += ${DOCKER_RUN_FLAGS}
