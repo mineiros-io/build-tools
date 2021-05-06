@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2021-05-05
+### Changed
+- feat: upgrade Terraform to `v0.15.1`
+
 ## [0.9.0] - 2021-05-05
 ### Added
 - Configure `GOPATH` and `TF_DATA_DIR` and add both as docker volumes
@@ -13,10 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade TfLint to v0.28.0
 - Upgrade pre-commit to v2.12.1
 - Upgrade snyk to v1.556.0
-
-## [0.8.1] - 2021-05-05
-### Added
-- Configure `GOPATH` and `TF_DATA_DIR` and add both as docker volumes
 
 ## [0.9.0] - 2021-05-04
 ### Changed
@@ -201,10 +201,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- References -->
 
 <!-- markdown-link-check-disable -->
-[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.9.0...HEAD
-[0.9.0]: https://github.com/mineiros-io/build-tools/compare/v0.8.1...v0.9.0
-[0.8.1]: https://github.com/mineiros-io/build-tools/compare/v0.8.0...v0.8.1
+[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/mineiros-io/build-tools/compare/v0.9.0...v0.10.0
 <!-- markdown-link-check-enable -->
+[0.9.0]: https://github.com/mineiros-io/build-tools/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/mineiros-io/build-tools/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/mineiros-io/build-tools/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/mineiros-io/build-tools/compare/v0.7.0...v0.7.1
