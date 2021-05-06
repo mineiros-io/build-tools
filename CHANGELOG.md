@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.2] - 2021-05-07
+### Fixed
+- fix: fix volume definition in Dockerfile
+
+### Changed
+- feat: install tools necessary for linters in separate steps
+
 ## [0.10.1] - 2021-05-06
 ### Changed
 - feat: upgrade Terraform to `v0.15.2`
