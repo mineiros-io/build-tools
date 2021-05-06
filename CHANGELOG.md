@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2021-05-06
+### Changed
+- feat: upgrade Terraform to `v0.15.2`
+
 ## [0.10.0] - 2021-05-05
 ### Changed
 - feat: upgrade Terraform to `v0.15.1`
@@ -201,9 +205,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- References -->
 
 <!-- markdown-link-check-disable -->
-[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.10.0...HEAD
-[0.10.0]: https://github.com/mineiros-io/build-tools/compare/v0.9.0...v0.10.0
+[Unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.10.1...HEAD
+[0.10.1]: https://github.com/mineiros-io/build-tools/compare/v0.10.0...v0.10.1
 <!-- markdown-link-check-enable -->
+[0.10.0]: https://github.com/mineiros-io/build-tools/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/mineiros-io/build-tools/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/mineiros-io/build-tools/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/mineiros-io/build-tools/compare/v0.7.1...v0.7.2
