@@ -96,14 +96,18 @@ RUN wget \
     unzip $TFLINT_ARCHIVE -d /usr/local/bin && \
     rm -f $TFLINT_ARCHIVE $TFLINT_CHECKSUM
 
-# Install golint, goimports, golangci-lint and markdown-lint-check that are being by some pre-commit hooks
-# Golangci_lint suggests to install the binary through the install script rather than `go get`.
-# For infos please see https://golangci-lint.run/usage/install/#ci-installation
+# Install golint and goimports
 RUN go get -u \
     golang.org/x/lint/golint \
-    golang.org/x/tools/cmd/goimports && \
-    wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s "v$GOLANGCI_LINT_VERSION" && \
-    npm install -g markdown-link-check
+    golang.org/x/tools/cmd/goimports
+
+# Install golangci-lint
+# Golangci_lint suggests to install the binary through the install script rather than `go get`.
+# For infos please see https://golangci-lint.run/usage/install/#ci-installation
+RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s "v$GOLANGCI_LINT_VERSION"
+
+# Install markdown-lint-check
+RUN npm install -g markdown-link-check
 
 # Download Packer, verify checksum and install to bin dir
 RUN wget \
