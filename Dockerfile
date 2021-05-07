@@ -7,8 +7,6 @@ ENV BUILD_DIR=/build
 ENV GOPATH=/go
 ENV TF_DATA_DIR=/terraform
 
-VOLUME [$GOPATH, $TF_DATA_DIR]
-
 # https://www.terraform.io/
 ARG TERRAFORM_VERSION
 ARG TERRAFORM_ARCHIVE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
