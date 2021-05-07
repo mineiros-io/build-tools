@@ -71,6 +71,67 @@ docker run --rm \
   terraform --version
 ```
 
+### Working Directory
+
+The containers working directory is `/build` which should be your target if
+you decide to mount any files from your local filesystem.
+
+### Terraform Working Directory
+
+Per default Terraform is configured to use `/terraform` as its working
+directory. This is configured through the `TF_DATA_DIR` environment variable
+and means that the `.terraform` directory will be removed after
+the container exits. We recommend creating a
+[named docker volume](https://docs.docker.com/storage/volumes/) for the
+`/terraform` directory to re-use its content between different runs.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/build \
+  -v terraform-working-directory:/terraform
+  mineiros/build-tools:latest \
+  terraform init
+```
+
+The working directory can be adjusted for a specific container through the
+`TF_DATA_DIR` environment variable.
+
+```bash
+
+docker run --rm \
+  -v ${PWD}:/build \
+  -e TF_DATA_DIR:/build
+  mineiros/build-tools:latest \
+  terraform init
+```
+
+### Go Working Directory
+
+Per default, Go is configured to use `/go` as its working directory. This is
+configured through the `GO_PATH` environment variable/ We recommend creating
+a [named docker volume](https://docs.docker.com/storage/volumes/)
+for the `/go` directory to re-use its content between 
+different runs.
+
+```bash
+docker run --rm \
+  -v ${PWD}:/build \
+  -v go-path-directory:/go \
+  mineiros/build-tools:latest \
+  go test ./test/...
+```
+
+The Go directory can be adjusted for a specific container through the
+`GO_PATH` environment variable.
+
+```bash
+docker run --rm \
+  -e GO_PATH=/build \
+  -v ${PWD}:/build \
+  mineiros/build-tools:latest \
+  go test ./test/...
+```
+
 ### Examples
 
 Please see the following examples for common use-cases.
