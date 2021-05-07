@@ -3,7 +3,6 @@
 [![Build Status](https://mineiros.semaphoreci.com/badges/build-tools/branches/master.svg?style=shields)](https://mineiros.semaphoreci.com/projects/build-tools)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/mineiros-io/build-tools.svg?label=latest&sort=semver)](https://github.com/mineiros-io/build-tools/releases)
 [![license](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Terraform Version](https://img.shields.io/badge/terraform-~%3E%200.12.20-623CE4.svg)](https://github.com/hashicorp/terraform/releases)
 [<img src="https://img.shields.io/badge/slack-@mineiros--community-f32752.svg?logo=slack">](https://join.slack.com/t/mineiros-community/shared_invite/zt-ehidestg-aLGoIENLVs6tvwJ11w9WGg)
 
 # build-tools
@@ -37,7 +36,7 @@ Currently, we are installing the following dependencies:
 - [Go](https://golang.org/)
 - [Terraform](https://www.terraform.io/)
 - [Packer](https://www.packer.io/)
-- [Node.js & npm](https://nodejs.org/)
+- [Node.js & NPM](https://nodejs.org/)
 
 ### Linters
 
@@ -55,6 +54,7 @@ pre-installed linters, that help you to ensure code quality and standards:
 This repository ships with some pre-installed open-source software that
 help you to monitor security:
 
+- [Snyk](https://github.com/snyk/snyk)
 - [Checkov](https://github.com/bridgecrewio/checkov)
 
 ## Getting started
@@ -82,8 +82,7 @@ initialize the terraform working environment.
 
 ```bash
 docker run --rm \
-  -v ${PWD}:/app/src \
-  -e USER_UID=$(id -u) \
+  -v ${PWD}:/build \
   mineiros/build-tools:latest \
   terraform init
 ```
@@ -97,8 +96,7 @@ the remote state backend.
 
 ```bash
 docker run --rm \
-  -v ${PWD}:/app/src \
-  -e USER_UID=$(id -u) \
+  -v ${PWD}:/build \
   -e AWS_ACCESS_KEY_ID \
   -e AWS_SECRET_ACCESS_KEY \
   -e AWS_SESSION_TOKEN \
@@ -114,8 +112,7 @@ plan file that we can use with the `terraform apply` comand.
 
 ```bash
 docker run --rm \
-  -v ${PWD}:/app/src \
-  -e USER_UID=$(id -u) \
+  -v ${PWD}:/build \
   -e AWS_ACCESS_KEY_ID \
   -e AWS_SECRET_ACCESS_KEY \
   -e AWS_SESSION_TOKEN \
@@ -131,7 +128,7 @@ environment variables and run
 
 ```bash
 docker run --rm \
-  -v ${PWD}:/app/src \
+  -v ${PWD}:/build \
   -e USER_UID=$(id -u) \
   -e AWS_ACCESS_KEY_ID \
   -e AWS_SECRET_ACCESS_KEY \
@@ -146,7 +143,7 @@ Mounts the current working director as a volume and run `go fmt` recursively.
 
 ```bash
 docker run --rm \
-  -v ${PWD}:/app/src \
+  -v ${PWD}:/build \
   -e USER_UID=$(id -u) \
   mineiros/build-tools:latest \
   go fmt ./...
@@ -155,7 +152,7 @@ docker run --rm \
 #### Run checkov on mounted directory
 ```bash
 docker run --rm \                                                                                                                                                                                           
-  -v ${PWD}:/app/src \
+  -v ${PWD}:/build \
   -e USER_UID=$(id -u) \
   mineiros/build-tools:latest \
   checkov --directory ./
