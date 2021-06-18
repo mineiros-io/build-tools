@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2021-06-18
+
 ### Changed
 
 - feat: upgrade Terraform to `v1.0.0`
@@ -15,8 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: upgrade pre-commit to `v2.13.0`
 - feat: upgrade golangci-lint to `v1.41.0`
 - feat: upgrade checkov to `v2.0.203`
+- feat: upgrade snyk-cli to `v1.639.0`
 
-## [0.11.0] - 2021-06-15
+## [0.11.0] - 2021-05-15
 
 ### Changed
 
