@@ -7,16 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### 
-
-## [0.11.0] - 2021-06-15
-
 ### Changed
 
 - feat: upgrade Terraform to `v1.0.0`
 - feat: upgrade tflint to `v0.29.1`
 - feat: upgrade packer to `v1.7.3`
 - feat: upgrade pre-commit to `v2.13.0`
+- feat: upgrade golangci-lint to `v1.41.0`
+
+## [0.11.0] - 2021-06-15
+
+### Changed
 
 - refactor: upgrade golangci-lint to `v1.40.0`
 
