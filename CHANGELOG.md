@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: upgrade packer to `v1.7.3`
 - feat: upgrade pre-commit to `v2.13.0`
 - feat: upgrade golangci-lint to `v1.41.0`
+- feat: upgrade checkov to `v2.0.203`
 
 ## [0.11.0] - 2021-06-15
 
