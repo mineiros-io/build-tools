@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - feat: upgrade Terraform to `v1.0.0`
+- feat: upgrade tflint to `v0.29.1`
 
 - refactor: upgrade golangci-lint to `v1.40.0`
 
