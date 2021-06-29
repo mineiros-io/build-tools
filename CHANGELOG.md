@@ -11,46 +11,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- feat: upgrade Terraform to `v1.0.0`
-- feat: upgrade tflint to `v0.29.1`
-- feat: upgrade packer to `v1.7.3`
-- feat: upgrade pre-commit to `v2.13.0`
-- feat: upgrade golangci-lint to `v1.41.0`
-- feat: upgrade checkov to `v2.0.203`
-- feat: upgrade snyk-cli to `v1.639.0`
+- Upgrade Terraform to `v1.0.0`
+- Upgrade tflint to `v0.29.1`
+- Upgrade packer to `v1.7.3`
+- Upgrade pre-commit to `v2.13.0`
+- Upgrade golangci-lint to `v1.41.0`
+- Upgrade checkov to `v2.0.203`
+- Upgrade snyk-cli to `v1.639.0`
 
 ## [0.11.0] - 2021-05-15
 
 ### Changed
 
-- refactor: upgrade golangci-lint to `v1.40.0`
+- Upgrade golangci-lint to `v1.40.0`
 
 ## [0.11.0] - 2021-05-07
 
 ### Remove
 
-- refactor: remove volume definition in Dockerfile
+- Remove volume definition in Dockerfile
 
 ### Added
 
-- docs: add instructions on how to use named docker volumes
+- Add instructions on how to use named docker volumes
 
 ### Changed
 
-- feat: install tools necessary for linters in separate steps
-- feat: upgrade Terraform to `v0.15.3`
+- Install tools necessary for linters in separate steps
+- Upgrade Terraform to `v0.15.3`
 
 ## [0.10.1] - 2021-05-06
 
 ### Changed
 
-- feat: upgrade Terraform to `v0.15.2`
+- Upgrade Terraform to `v0.15.2`
 
 ## [0.10.0] - 2021-05-05
 
 ### Changed
 
-- feat: upgrade Terraform to `v0.15.1`
+- Upgrade Terraform to `v0.15.1`
 
 ## [0.9.0] - 2021-05-05
 
