@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/mineiros-io/brand/3bffd30e8bdbbde32c143e2650b2faa55f1df3ea/mineiros-primary-logo.svg" width="400"/>](https://mineiros.io/?ref=build-tools)
 
-[![Build Status](https://mineiros.semaphoreci.com/badges/build-tools/branches/master.svg?style=shields)](https://mineiros.semaphoreci.com/projects/build-tools)
+[![Build Status](https://github.com/mineiros-io/build-tools/actions/workflows/main.yml/badge.svg)](https://github.com/mineiros-io/build-tools/actions/workflows/main.yml)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/mineiros-io/build-tools.svg?label=latest&sort=semver)](https://github.com/mineiros-io/build-tools/releases)
 [![license](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 [<img src="https://img.shields.io/badge/slack-@mineiros--community-f32752.svg?logo=slack">](https://join.slack.com/t/mineiros-community/shared_invite/zt-ehidestg-aLGoIENLVs6tvwJ11w9WGg)
