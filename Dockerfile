@@ -73,9 +73,9 @@ RUN pip3 install --ignore-installed pre-commit==$PRECOMMIT_VERSION
 # Install checkov
 RUN pip3 install --ignore-installed checkov==$CHECKOV_VERSION
 
-# Install tfswitch and latest stable Terraform release
+# Install tfswitch and the Terraform version that is defined in the $TERRAFORM_VERSION build arg
 RUN wget -O- -nv https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | sh
-RUN tfswitch --latest-stable $TERRAFORM_VERSION
+RUN tfswitch $TERRAFORM_VERSION
 
 # Download Tflint, verify checksum and install to bin dir
 RUN wget \

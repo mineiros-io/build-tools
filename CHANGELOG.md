@@ -16,6 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `docker run -e TF_VERSION=1.0.3 --rm mineiros/build-tools:latest terraform --version`).
 - Add revive for linting to replace the deprecated golint
 
+### Changed
+
+- Upgrade Terraform to `1.0.4`
+- Upgrade Packer to `1.7.4`
+- Upgrade TFLint to `0.30.0`
+- Upgrade golangci-lint to `1.41.1`
+- Upgrade checkov to `2.0.336`
+- Upgrade snyk-cli to `1.669.0`
+
 ## [0.12.1]
 
 ### Changed

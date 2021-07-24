@@ -6,12 +6,12 @@ ifdef CI
 endif
 
 TERRAFORM_VERSION = 1.0.4
-TFLINT_VERSION = 0.29.1
-PACKER_VERSION = 1.7.3
+TFLINT_VERSION = 0.30.0
+PACKER_VERSION = 1.7.4
 PRECOMMIT_VERSION = 2.13.0
-GOLANGCI_LINT_VERSION = 1.41.0
-CHECKOV_VERSION = 2.0.203
-SNYK_VERSION = 1.556.0
+GOLANGCI_LINT_VERSION = 1.41.1
+CHECKOV_VERSION = 2.0.336
+SNYK_VERSION = 1.669.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 # github magic tagging:
@@ -98,7 +98,7 @@ check/updates:
 	fi
 
 	@if [ "${CHECKOV_VERSION}" != "${CHECKOV_LATEST}" ] ; then \
-	  echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available to checkov ${CHECKOV_VERSION}${RESET}" ; \
+	  echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available to checkov ${CHECKOV_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}checkov ${CHECKOV_VERSION} - checkov is up to date.${RESET}" ; \
 	fi
