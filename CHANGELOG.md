@@ -16,13 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `docker run -e TF_VERSION=1.0.3 --rm mineiros/build-tools:latest terraform --version`).
 - Add revive for linting to replace the deprecated golint
 
-## [0.12.1] - 2021-07-11
+## [0.12.1]
 
 ### Changed
 
 - Upgrade Terraform to `v1.0.2`
 
-## [0.12.0] - 2021-06-18
+## [0.12.0]
 
 ### Changed
 
@@ -34,13 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade checkov to `v2.0.203`
 - Upgrade snyk-cli to `v1.639.0`
 
-## [0.11.0] - 2021-05-15
+## [0.11.0]
 
 ### Changed
 
 - Upgrade golangci-lint to `v1.40.0`
 
-## [0.11.0] - 2021-05-07
+## [0.11.0]
 
 ### Remove
 
@@ -55,19 +55,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Install tools necessary for linters in separate steps
 - Upgrade Terraform to `v0.15.3`
 
-## [0.10.1] - 2021-05-06
+## [0.10.1]
 
 ### Changed
 
 - Upgrade Terraform to `v0.15.2`
 
-## [0.10.0] - 2021-05-05
+## [0.10.0]
 
 ### Changed
 
 - Upgrade Terraform to `v0.15.1`
 
-## [0.9.0] - 2021-05-05
+## [0.9.0]
 
 ### Added
 
@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.12.1
 - Upgrade snyk to v1.556.0
 
-## [0.9.0] - 2021-05-04
+## [0.9.0]
 
 ### Changed
 
@@ -88,7 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.12.1
 - Upgrade snyk to v1.556.0
 
-## [0.8.0] - 2021-04-15
+## [0.8.0]
 
 ### Added
 
@@ -103,7 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Packer to v1.7.2
 - Upgrade pre-commit to v2.12.0
 
-## [0.7.2] - 2021-04-14
+## [0.7.2]
 
 ### Added
 
@@ -118,13 +118,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.11.1
 - Upgrade snyk to v1.507.0
 
-## [0.7.1] - 2021-03-06
+## [0.7.1]
 
 ### Changed
 
 - migrated to github actions
 
-## [0.7.0] - 2021-04-14
+## [0.7.0]
 
 ### Changed
 
@@ -135,7 +135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to v2.9.3
 - Upgrade Docker-base to fix security issues
 
-## [0.6.3] - 2020-10-01
+## [0.6.3]
 
 ### Changed
 
@@ -143,7 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Packer to v1.6.4
 - Upgrade TfLint to v0.20.2
 
-## [0.6.2] - 2020-09-17
+## [0.6.2]
 
 ### Changed
 
@@ -151,13 +151,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade TfLint to v0.20.1.
 - Upgrade golangci-lint to v1.31.0
 
-## [0.6.1] - 2020-09-14
+## [0.6.1]
 
 ### Changed
 
 - Upgrade Terraform to v0.13.2
 
-## [0.6.0] - 2020-08-31
+## [0.6.0]
 
 ### Changed
 
@@ -168,7 +168,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Snyk-cli to v1.386.0
 - Upgrade Terraform to v0.13.1
 
-## [0.5.4] 2020-05-04
+## [0.5.4]
 
 ### Changed
 
@@ -179,7 +179,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add phony-targets pre-commit hook.
 
-## [0.5.3] - 2020-05-30
+## [0.5.3]
 
 ### Fix
 
@@ -195,38 +195,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed to new logo and change label color to new CD.
 
-## [0.5.2] - 2020-05-29
+## [0.5.2]
 
 ### Added
 
 - Add GNU make to docker image since it's required by our pre-commit-hooks.
 
-## [0.5.1] - 2020-05-29
+## [0.5.1]
 
 ### Changed
 
 - Upgrade Terraform to v0.12.26.
 
-## [0.5.0] - 2020-05-24
+## [0.5.0]
 
 ### Fixed
 
 - Fixes quoting in command-line arguments when invoking recursive bash -c or other commands.
 
-## [0.4.0] - 2020-05-21
+## [0.4.0]
 
 ### Added
 
 - Add possibility to run undera specific UID.
 - Add possibility to run under SSH-Agent to access private repositories.
 
-## [0.3.1] - 2020-05-18
+## [0.3.1]
 
 ### Fixed
 
 - Fix broken release CI.ss
 
-## [0.3.0] - 2020-05-17
+## [0.3.0]
 
 ### Added
 
@@ -243,27 +243,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update TFlint to v0.16.0.
 - Update pre-commits 2.4.0.
 
-## [0.2.2] - 2020-05-16
+## [0.2.2]
 
 ### Fixed
 
 - Fix Ci to push correct latest tag to hub.docker.com.
 
-## [0.2.1] - 2020-05-16
+## [0.2.1]
 
 ### Changed
 
 - Update packer to v1.5.6.
 - Refactor and fix Semaphore CI integration.
 
-## [0.2.0] - 2020-05-04
+## [0.2.0]
 
 ### Changed
 
 - Update the targets inside the makefile to match namespaces.
 - Move filenames, path and urls to variables to avoid duplication.
 
-## [0.1.6] - 2020-05-03
+## [0.1.6]
 
 ### Removed
 
@@ -274,25 +274,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add a script entrypoint.sh for dynamically setting options such as HOME on startup.
 
-## [0.1.5] - 2020-04-18
+## [0.1.5]
 
 ### Added
 
 - Allow adding additional tags for existing docker images.
 
-## [0.1.4] - 2020-04-17
+## [0.1.4]
 
 ### Changed
 
 - Upgrade golang from 1.14.2-alpine3.11.
 
-## [0.1.3] - 2020-04-10
+## [0.1.3]
 
 ### Added
 
 - Add snyk.io vulnerability scanner for detecting vulnerabilities in docker images.
 
-## [0.1.2] - 2020-03-27
+## [0.1.2]
 
 ### Changed
 
@@ -300,32 +300,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Tflint to version 0.15.3.
 - Upgrade Packer to version 1.5.5.
 
-## [0.1.1] - 2020-03-16
+## [0.1.1]
 
 ### Added
 
 - Add docker client as a dependency in order to use docker out of docker ( DooD ).
 
-## [0.1.0] - 2020-03-13
+## [0.1.0]
 
 ### Added
 
 - Add Packer to dependencies.
 
-## [0.0.3] - 2020-03-13
+## [0.0.3]
 
 ### Changed
 
 - Upgrade Terraform to v0.12.23.
 - Upgrade TFLint to v0.15.1.
 
-## [0.0.2] - 2020-02-28
+## [0.0.2]
 
 ### Changed
 
 - Upgrade Terraform to 0.12.21.
 
-## [0.0.1] - 2020-05-25
+## [0.0.1]
 
 ### Added
 
