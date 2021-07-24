@@ -174,14 +174,12 @@ test/execute-tools:
 ## Display help for all targets
 .PHONY: help
 help:
-	@awk '/^[a-zA-Z_0-9%:\\\/-]+:/ { \
-		msg = match(lastLine, /^## (.*)/); \
+	@awk '/^.PHONY: / { \
+		msg = match(lastLine, /^## /); \
 			if (msg) { \
-				cmd = $$1; \
-				msg = substr(lastLine, RSTART + 3, RLENGTH); \
-				gsub("\\\\", "", cmd); \
-				gsub(":+$$", "", cmd); \
-				printf "  ${GREEN}make %-20s${RESET} %s\n", cmd, msg; \
+				cmd = substr($$0, 9, 100); \
+				msg = substr(lastLine, 4, 1000); \
+				printf "  ${GREEN}%-30s${RESET} %s\n", cmd, msg; \
 			} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
