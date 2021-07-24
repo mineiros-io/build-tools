@@ -65,42 +65,48 @@ check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repo
 check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
 check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
 check/updates: CHECKOV_LATEST=$(shell curl -s "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: SNYK_LATEST=$(shell curl -s "https://api.github.com/repos/snyk/snyk/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates:
 	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
-	  echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available to terraform ${TERRAFORM_LATEST}${RESET}" ; \
+	  echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available: ${TERRAFORM_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}terraform ${TERRAFORM_VERSION} - terraform is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${PACKER_VERSION}" != "${PACKER_LATEST}" ] ; then \
-	  echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available to packer ${PACKER_LATEST}${RESET}" ; \
+	  echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available: ${PACKER_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}packer ${PACKER_VERSION} - packer is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${TFLINT_VERSION}" != "${TFLINT_LATEST}" ] ; then \
-	  echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available to tflint ${TFLINT_LATEST}${RESET}" ; \
+	  echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available: ${TFLINT_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${GOLANGCI_LINT_VERSION}" != "${GOLANGCI_LINT_LATEST}" ] ; then \
-	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available to golangci-lint ${GOLANGCI_LINT_LATEST}${RESET}" ; \
+	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available: ${GOLANGCI_LINT_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}golangci-lint ${GOLANGCI_LINT_VERSION} - golangci-lint is up to date.${RESET}" ; \
 	fi
 
-
 	@if [ "${PRECOMMIT_VERSION}" != "${PRECOMMIT_LATEST}" ] ; then \
-	  echo "${RED}pre-commit ${PRECOMMIT_VERSION}${YELLOW} - update available to pre-commit ${PRECOMMIT_LATEST}${RESET}" ; \
+	  echo "${RED}pre-commit ${PRECOMMIT_VERSION}${YELLOW} - update available: ${PRECOMMIT_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}pre-commit ${PRECOMMIT_VERSION} - pre-commit is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${CHECKOV_VERSION}" != "${CHECKOV_LATEST}" ] ; then \
-	  echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available to checkov ${CHECKOV_LATEST}${RESET}" ; \
+		echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available: ${CHECKOV_LATEST}${RESET}" ; \
 	else \
 	  echo "${GREEN}checkov ${CHECKOV_VERSION} - checkov is up to date.${RESET}" ; \
+	fi
+
+	@if [ "${SNYK_VERSION}" != "${SNYK_LATEST}" ] ; then \
+	  echo "${RED}snyk ${SNYK_VERSION}${YELLOW} - update available: ${SNYK_LATEST}${RESET}" ; \
+	else \
+	  echo "${GREEN}snyk ${SNYK_VERSION} - snyk is up to date.${RESET}" ; \
 	fi
 
 ## Build the docker image
