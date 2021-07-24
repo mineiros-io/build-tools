@@ -35,6 +35,7 @@ Currently, we are installing the following dependencies:
 
 - [Go](https://golang.org/)
 - [Terraform](https://www.terraform.io/)
+- [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
 - [Packer](https://www.packer.io/)
 - [Node.js & NPM](https://nodejs.org/)
 
@@ -133,11 +134,25 @@ docker run --rm \
   go test ./test/...
 ```
 
-### Examples
+## Examples
 
 Please see the following examples for common use-cases.
 
-#### Terraform init
+### Change the Terraform Version on Container Startup
+
+This docker image comes with a pre-installed version of Terraform.
+To switch to a different Terraform on container startup, please define the
+desired Terraform version through the `TF_VERSION` environment variable
+when starting a new container.
+
+```bash
+docker run --rm \
+  -e TF_VERSION=1.0.0 \
+  mineiros/build-tools:latest \
+  terraform --version
+```
+
+### Terraform init
 
 Mount the current working diretory as a volume and run `terraform init` to
 initialize the terraform working environment.
@@ -149,7 +164,7 @@ docker run --rm \
   terraform init
 ```
 
-#### Work with S3 remote state
+### Work with S3 remote state
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run `terraform init`. Requires
@@ -166,7 +181,7 @@ docker run --rm \
   terraform init
 ```
 
-#### Create a Terraform planfile
+### Create a Terraform planfile
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run `terraform plan --out=plan.tf` for creating a
@@ -182,7 +197,7 @@ docker run --rm \
   terraform plan -input=false -out=plan.tf
 ```
 
-#### Apply a Terraform planfile
+### Apply a Terraform planfile
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run
@@ -199,7 +214,7 @@ docker run --rm \
   terraform apply -input=false -out=plan.tf
 ```
 
-#### Run go fmt on mounted source code
+### Run go fmt on mounted source code
 
 Mounts the current working director as a volume and run `go fmt` recursively.
 
@@ -211,7 +226,7 @@ docker run --rm \
   go fmt ./...
 ```
 
-#### Run checkov on mounted directory
+### Run checkov on mounted directory
 ```bash
 docker run --rm \                                                                                                                                                                                           
   -v ${PWD}:/build \

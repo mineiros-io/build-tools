@@ -7,12 +7,8 @@ ENV BUILD_DIR=/build
 ENV GOPATH=/go
 ENV TF_DATA_DIR=/terraform
 
-# https://www.terraform.io/
+# Configure Terraform version
 ARG TERRAFORM_VERSION
-ARG TERRAFORM_ARCHIVE=terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-ARG TERRAFORM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_ARCHIVE}
-ARG TERRAFORM_CHECKSUM=terraform_${TERRAFORM_VERSION}_SHA256SUMS
-ARG TERRAFORM_CHECKSUM_URL=https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${TERRAFORM_CHECKSUM}
 
 # TFLint
 # https://github.com/terraform-linters/tflint
@@ -68,7 +64,8 @@ RUN apk add --no-cache \
     python3 \
     python3-dev \
     py3-pip \
-    shellcheck
+    shellcheck \
+    libc6-compat
 
 # Install pre-commit framework
 RUN pip3 install --ignore-installed pre-commit==$PRECOMMIT_VERSION
@@ -76,14 +73,9 @@ RUN pip3 install --ignore-installed pre-commit==$PRECOMMIT_VERSION
 # Install checkov
 RUN pip3 install --ignore-installed checkov==$CHECKOV_VERSION
 
-# Download Terraform, verify checksum and install to bin dir
-RUN wget \
-    $TERRAFORM_URL \
-    $TERRAFORM_CHECKSUM_URL && \
-    sed -i '/terraform_.*_linux_amd64.zip/!d' $TERRAFORM_CHECKSUM && \
-    sha256sum -cs $TERRAFORM_CHECKSUM && \
-    unzip $TERRAFORM_ARCHIVE -d /usr/local/bin && \
-    rm -f $TERRAFORM_ARCHIVE $TERRAFORM_CHECKSUM
+# Install tfswitch and latest stable Terraform release
+RUN wget -O- -nv https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | sh
+RUN tfswitch --latest-stable $TERRAFORM_VERSION
 
 # Download Tflint, verify checksum and install to bin dir
 RUN wget \

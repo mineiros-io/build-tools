@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
+  to allow for dynamically switching the Terraform version on container startup.
+  To install and switch to a specific Terraform version using the `tfswitch`
+  command, please set the `TF_VERSION` variable on docker run (e.g. 
+  `docker run -e TF_VERSION=1.0.3 --rm mineiros/build-tools:latest terraform --version`).
 - Add revive for linting to replace the deprecated golint
 
 ## [0.12.1] - 2021-07-11
