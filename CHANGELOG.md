@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0]
+
 ### Added
 
 - Add [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
@@ -345,8 +347,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- markdown-link-check-disable -->
 
-[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.12.1...HEAD
-[0.12.1]: https://github.com/mineiros-io/build-tools/compare/v0.12.0...v0.12.1
+[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/mineiros-io/build-tools/compare/v0.12.1...v0.13.0
 
 <!-- markdown-link-check-enable -->
 
