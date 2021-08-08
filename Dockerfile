@@ -94,9 +94,10 @@ RUN wget \
     unzip $TFLINT_ARCHIVE -d /usr/local/bin && \
     rm -f $TFLINT_ARCHIVE $TFLINT_CHECKSUM
 
-# Install golint and goimports
+# Install Go linter
 RUN go get -u \
     golang.org/x/lint/golint \
+    github.com/mgechev/revive \
     golang.org/x/tools/cmd/goimports
 
 # Install golangci-lint
