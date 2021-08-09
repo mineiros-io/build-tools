@@ -8,4 +8,8 @@ if [ -n "${USER_UID}" ]; then
   exec su user -c "${*@Q}"
 fi
 
+if [ -n "${TF_VERSION}" ]; then
+  tfswitch "${TF_VERSION}"
+fi
+
 exec "${@}"

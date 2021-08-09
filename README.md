@@ -10,13 +10,21 @@
 A collection of build tools for the Mineiros Infrastructure as Code (IaC) library.
 
 - [Introduction](#introduction)
+  - [Dependencies](#dependencies)
+  - [Linters](#linters)
+  - [Security](#security)
 - [Getting started](#getting-started)
-  - [Examples](#examples)
-    - [Terraform init](#terraform-init)
-    - [Work with S3 remote state](#work-with-s3-remote-state)
-    - [Create a Terraform planfile](#create-a-terraform-planfile)
-    - [Apply a Terraform planfile](#apply-a-terraform-planfile)
-    - [Run go fmt on mounted source code](#run-go-fmt-on-mounted-source-code)
+  - [Working Directory](#working-directory)
+  - [Terraform Working Directory](#terraform-working-directory)
+  - [Go Working Directory](#go-working-directory)
+- [Examples](#examples)
+  - [Change the Terraform Version on Container Startup](#change-the-terraform-version-on-container-startup)
+  - [Terraform init](#terraform-init)
+  - [Work with S3 remote state](#work-with-s3-remote-state)
+  - [Create a Terraform planfile](#create-a-terraform-planfile)
+  - [Apply a Terraform planfile](#apply-a-terraform-planfile)
+  - [Run go fmt on mounted source code](#run-go-fmt-on-mounted-source-code)
+  - [Run checkov on mounted directory](#run-checkov-on-mounted-directory)
 - [Module Versioning](#module-versioning)
   - [Backwards compatibility in `0.0.z` and `0.y.z` version](#backwards-compatibility-in-00z-and-0yz-version)
 - [About Mineiros](#about-mineiros)
@@ -35,6 +43,7 @@ Currently, we are installing the following dependencies:
 
 - [Go](https://golang.org/)
 - [Terraform](https://www.terraform.io/)
+- [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
 - [Packer](https://www.packer.io/)
 - [Node.js & NPM](https://nodejs.org/)
 
@@ -133,11 +142,25 @@ docker run --rm \
   go test ./test/...
 ```
 
-### Examples
+## Examples
 
 Please see the following examples for common use-cases.
 
-#### Terraform init
+### Change the Terraform Version on Container Startup
+
+This docker image comes with a pre-installed version of Terraform.
+To switch to a different Terraform on container startup, please define the
+desired Terraform version through the `TF_VERSION` environment variable
+when starting a new container.
+
+```bash
+docker run --rm \
+  -e TF_VERSION=1.0.0 \
+  mineiros/build-tools:latest \
+  terraform --version
+```
+
+### Terraform init
 
 Mount the current working diretory as a volume and run `terraform init` to
 initialize the terraform working environment.
@@ -149,7 +172,7 @@ docker run --rm \
   terraform init
 ```
 
-#### Work with S3 remote state
+### Work with S3 remote state
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run `terraform init`. Requires
@@ -166,7 +189,7 @@ docker run --rm \
   terraform init
 ```
 
-#### Create a Terraform planfile
+### Create a Terraform planfile
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run `terraform plan --out=plan.tf` for creating a
@@ -182,7 +205,7 @@ docker run --rm \
   terraform plan -input=false -out=plan.tf
 ```
 
-#### Apply a Terraform planfile
+### Apply a Terraform planfile
 
 Mount the current working directory as a volume, pass AWS access credentials as
 environment variables and run
@@ -199,7 +222,7 @@ docker run --rm \
   terraform apply -input=false -out=plan.tf
 ```
 
-#### Run go fmt on mounted source code
+### Run go fmt on mounted source code
 
 Mounts the current working director as a volume and run `go fmt` recursively.
 
@@ -211,7 +234,7 @@ docker run --rm \
   go fmt ./...
 ```
 
-#### Run checkov on mounted directory
+### Run checkov on mounted directory
 ```bash
 docker run --rm \                                                                                                                                                                                           
   -v ${PWD}:/build \
