@@ -52,10 +52,7 @@ Currently, we are installing the following dependencies:
 In addition to the above listed technologies, build-tools ships with some
 pre-installed linters, that help you to ensure code quality and standards:
 
-- [(DEPRECATED) Golint](https://github.com/golang/lint)
-- [Revive](https://github.com/mgechev/revive)
 - [golangci-lint](https://github.com/golangci/golangci-lint)
-- [Goimports](https://godoc.org/golang.org/x/tools/cmd/goimports)
 - [TFLint](https://github.com/terraform-linters/tflint)
 - [markdown-link-check](https://github.com/tcort/markdown-link-check)
 

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Remove `goimports`, `golint` and `revive` since those linters are handled
+  through `golangci-lint` and therefore they are redundant.
+
 ## [0.13.0]
 
 ### Added

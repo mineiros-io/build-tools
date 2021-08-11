@@ -173,9 +173,7 @@ test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} tflint --version
 	docker run --rm ${BUILD_IMAGE} pre-commit --version
 	docker run --rm ${BUILD_IMAGE} checkov --version
-	docker run --rm ${BUILD_IMAGE} golint
-	docker run --rm ${BUILD_IMAGE} revive --version
-	docker run --rm ${BUILD_IMAGE} goimports
+	docker run --rm ${BUILD_IMAGE} golangci-lint --version
 
 ## Display help for all targets
 .PHONY: help
