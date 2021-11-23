@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Upgrade Terraform to `1.0.11`
+
 ## [0.14.0]
 
 ### Breaking Changes
