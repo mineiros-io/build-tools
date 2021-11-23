@@ -158,7 +158,8 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${BUILD_IMAGE} --file=Dockerfile | cat
+		${SNYK_CLI_DOCKER_IMAGE} container test ${BUILD_IMAGE} \
+		--severity-threshold=medium | cat
 
 ## Run the pre-commit hooks inside build-tools docker
 .PHONY: test/pre-commit
