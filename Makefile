@@ -5,13 +5,13 @@ ifdef CI
 	V ?= 1
 endif
 
-TERRAFORM_VERSION = 1.0.4
-TFLINT_VERSION = 0.30.0
-PACKER_VERSION = 1.7.4
-PRECOMMIT_VERSION = 2.13.0
-GOLANGCI_LINT_VERSION = 1.41.1
-CHECKOV_VERSION = 2.0.336
-SNYK_VERSION = 1.669.0
+TERRAFORM_VERSION = 1.0.11
+TFLINT_VERSION = 0.33.1
+PACKER_VERSION = 1.7.8
+PRECOMMIT_VERSION = 2.15.0
+GOLANGCI_LINT_VERSION = 1.43.0
+CHECKOV_VERSION = 2.0.599
+SNYK_VERSION = 1.769.0
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 # github magic tagging:
@@ -158,7 +158,8 @@ test/snyk:
 		-e "MONITOR=${SNYK_MONITOR}" \
 		-v "${PWD}:/project" \
 		-v ${DOCKER_SOCKET}:/var/run/docker.sock \
-		${SNYK_CLI_DOCKER_IMAGE} test --docker ${BUILD_IMAGE} --file=Dockerfile | cat
+		${SNYK_CLI_DOCKER_IMAGE} container test ${BUILD_IMAGE} \
+		--severity-threshold=medium | cat
 
 ## Run the pre-commit hooks inside build-tools docker
 .PHONY: test/pre-commit
