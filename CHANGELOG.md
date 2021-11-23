@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade pre-commit to `v2.15.0`
 - Upgrade golangci-lint to `v1.43.0`
 - Upgrade checkov to `2.0.599`
+- Upgrade snyk to `1.769.0`
 
 ## [0.14.0]
 
