@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade TFLint to `v0.34.1`
 - Upgrade pre-commit to `v2.16.0`
 - Upgrade checkov to `2.0.692`
+- Upgrade snyk to `1.809.0`
 
 ## [0.14.2]
 
