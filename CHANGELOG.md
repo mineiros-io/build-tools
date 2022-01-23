@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0]
+
+### Fixed
+
+- BREAKING CHANGE: remove broken tfswitch tool
+
+### Changed
+
+- Upgrade Terraform to `v1.1.4`
+
 ## [0.14.4]
 
 ### Fixed
@@ -386,8 +396,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- References -->
 
-[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.14.4...HEAD
+[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.15.0...HEAD
 
+[0.15.0]: https://github.com/mineiros-io/build-tools/compare/v0.14.4...v0.15.0
 [0.14.4]: https://github.com/mineiros-io/build-tools/compare/v0.14.3...v0.14.4
 [0.14.3]: https://github.com/mineiros-io/build-tools/compare/v0.14.2...v0.14.3
 [0.14.2]: https://github.com/mineiros-io/build-tools/compare/v0.14.1...v0.14.2
