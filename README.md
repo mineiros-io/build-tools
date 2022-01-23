@@ -43,7 +43,6 @@ Currently, we are installing the following dependencies:
 
 - [Go](https://golang.org/)
 - [Terraform](https://www.terraform.io/)
-- [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
 - [Packer](https://www.packer.io/)
 - [Node.js & NPM](https://nodejs.org/)
 
@@ -142,20 +141,6 @@ docker run --rm \
 ## Examples
 
 Please see the following examples for common use-cases.
-
-### Change the Terraform Version on Container Startup
-
-This docker image comes with a pre-installed version of Terraform.
-To switch to a different Terraform on container startup, please define the
-desired Terraform version through the `TF_VERSION` environment variable
-when starting a new container.
-
-```bash
-docker run --rm \
-  -e TF_VERSION=1.0.0 \
-  mineiros/build-tools:latest \
-  terraform --version
-```
 
 ### Terraform init
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [ -n "${TF_VERSION}" ]; then
-  tfswitch "${TF_VERSION}"
+  echo "setting TF_VERSION is no longer supported"
+  exit 1
 fi
 
 if [ -n "${USER_UID}" ]; then
