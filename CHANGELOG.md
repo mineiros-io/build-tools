@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.4]
+
+### Fixed
+
+- Run tfswitch before switching user
+
 ## [0.14.3]
 
 ### Changed
@@ -49,7 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add [terraform-switcher](https://github.com/warrensbox/terraform-switcher)
   to allow for dynamically switching the Terraform version on container startup.
   To install and switch to a specific Terraform version using the `tfswitch`
-  command, please set the `TF_VERSION` variable on docker run (e.g. 
+  command, please set the `TF_VERSION` variable on docker run (e.g.
   `docker run -e TF_VERSION=1.0.3 --rm mineiros/build-tools:latest terraform --version`).
 - Add revive for linting to replace the deprecated golint
 
@@ -380,8 +386,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- References -->
 
-[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.14.3...HEAD
+[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.14.4...HEAD
 
+[0.14.4]: https://github.com/mineiros-io/build-tools/compare/v0.14.3...v0.14.4
 [0.14.3]: https://github.com/mineiros-io/build-tools/compare/v0.14.2...v0.14.3
 [0.14.2]: https://github.com/mineiros-io/build-tools/compare/v0.14.1...v0.14.2
 [0.14.1]: https://github.com/mineiros-io/build-tools/compare/v0.14.0...v0.14.1
