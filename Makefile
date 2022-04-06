@@ -60,14 +60,14 @@ default: help
 
 ## check for updates
 .PHONY: check/updates
-check/updates: PRECOMMIT_LATEST=$(shell curl -s "https://api.github.com/repos/pre-commit/pre-commit/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: TFLINT_LATEST=$(shell curl -s "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
-check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
-check/updates: CHECKOV_LATEST=$(shell curl -s "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: SNYK_LATEST=$(shell curl -s "https://api.github.com/repositories/45247496/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: TERRADOC_LATEST=$(shell curl -s "https://api.github.com/repos/mineiros-io/terradoc/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: PRECOMMIT_LATEST=$(shell curl -sL "https://api.github.com/repos/pre-commit/pre-commit/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: TFLINT_LATEST=$(shell curl -sL "https://api.github.com/repos/terraform-linters/tflint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: GOLANGCI_LINT_LATEST=$(shell curl -sL "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: PACKER_LATEST=$(shell curl -sL https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
+check/updates: TERRAFORM_LATEST = $(shell curl -sL https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
+check/updates: CHECKOV_LATEST=$(shell curl -sL "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: SNYK_LATEST=$(shell curl -sL "https://api.github.com/repos/snyk/snyk/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: TERRADOC_LATEST=$(shell curl -sL "https://api.github.com/repos/mineiros-io/terradoc/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates:
 	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
 		echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available: ${TERRAFORM_LATEST}${RESET}" ; \

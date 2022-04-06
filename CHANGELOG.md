@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade snyk to `1.896.0`
 - Update base image to `golang:1.18.0-alpine3.15`
 
+### Fixed
+
+- Follow redirects in version checks
+
 ## [0.15.0]
 
 ### Fixed
