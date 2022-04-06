@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgrade Terraform to `v1.1.7`
+- Upgrade TFLint to `v0.35.0`
 
 ## [0.15.0]
 
