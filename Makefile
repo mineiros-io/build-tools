@@ -12,6 +12,7 @@ PRECOMMIT_VERSION = 2.18.1
 GOLANGCI_LINT_VERSION = 1.45.2
 CHECKOV_VERSION = 2.0.1037
 SNYK_VERSION = 1.896.0
+TERRADOC_VERSION = 0.0.8
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 # github magic tagging:
@@ -19,11 +20,11 @@ DOCKER_HUB_REPO ?= mineiros/build-tools
 # else if running in github actions and a sha is available use the sha
 # else use "latest"
 ifeq ("$(dir ${GITHUB_REF})", "refs/tags/")
-  DOCKER_IMAGE_TAG=$(notdir ${GITHUB_REF})
+	DOCKER_IMAGE_TAG=$(notdir ${GITHUB_REF})
 endif
 
 ifdef GITHUB_SHA
-  DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
+	DOCKER_IMAGE_TAG ?= ${GITHUB_SHA}
 endif
 
 LATEST_TAG=latest
@@ -65,61 +66,69 @@ check/updates: GOLANGCI_LINT_LATEST=$(shell curl -s "https://api.github.com/repo
 check/updates: PACKER_LATEST=$(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
 check/updates: TERRAFORM_LATEST = $(shell curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
 check/updates: CHECKOV_LATEST=$(shell curl -s "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
-check/updates: SNYK_LATEST=$(shell curl -s "https://api.github.com/repos/snyk/snyk/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: SNYK_LATEST=$(shell curl -s "https://api.github.com/repositories/45247496/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: TERRADOC_LATEST=$(shell curl -s "https://api.github.com/repos/mineiros-io/terradoc/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates:
 	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
-	  echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available: ${TERRAFORM_LATEST}${RESET}" ; \
+		echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available: ${TERRAFORM_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}terraform ${TERRAFORM_VERSION} - terraform is up to date.${RESET}" ; \
+		echo "${GREEN}terraform ${TERRAFORM_VERSION} - terraform is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${PACKER_VERSION}" != "${PACKER_LATEST}" ] ; then \
-	  echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available: ${PACKER_LATEST}${RESET}" ; \
+		echo "${RED}packer ${PACKER_VERSION}${YELLOW} - update available: ${PACKER_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}packer ${PACKER_VERSION} - packer is up to date.${RESET}" ; \
+		echo "${GREEN}packer ${PACKER_VERSION} - packer is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${TFLINT_VERSION}" != "${TFLINT_LATEST}" ] ; then \
-	  echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available: ${TFLINT_LATEST}${RESET}" ; \
+		echo "${RED}tflint ${TFLINT_VERSION}${YELLOW} - update available: ${TFLINT_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
+		echo "${GREEN}tflint ${TFLINT_VERSION} - tflint is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${GOLANGCI_LINT_VERSION}" != "${GOLANGCI_LINT_LATEST}" ] ; then \
-	  echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available: ${GOLANGCI_LINT_LATEST}${RESET}" ; \
+		echo "${RED}golangci-lint ${GOLANGCI_LINT_VERSION}${YELLOW} - update available: ${GOLANGCI_LINT_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}golangci-lint ${GOLANGCI_LINT_VERSION} - golangci-lint is up to date.${RESET}" ; \
+		echo "${GREEN}golangci-lint ${GOLANGCI_LINT_VERSION} - golangci-lint is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${PRECOMMIT_VERSION}" != "${PRECOMMIT_LATEST}" ] ; then \
-	  echo "${RED}pre-commit ${PRECOMMIT_VERSION}${YELLOW} - update available: ${PRECOMMIT_LATEST}${RESET}" ; \
+		echo "${RED}pre-commit ${PRECOMMIT_VERSION}${YELLOW} - update available: ${PRECOMMIT_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}pre-commit ${PRECOMMIT_VERSION} - pre-commit is up to date.${RESET}" ; \
+		echo "${GREEN}pre-commit ${PRECOMMIT_VERSION} - pre-commit is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${CHECKOV_VERSION}" != "${CHECKOV_LATEST}" ] ; then \
 		echo "${RED}checkov ${CHECKOV_VERSION}${YELLOW} - update available: ${CHECKOV_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}checkov ${CHECKOV_VERSION} - checkov is up to date.${RESET}" ; \
+		echo "${GREEN}checkov ${CHECKOV_VERSION} - checkov is up to date.${RESET}" ; \
 	fi
 
 	@if [ "${SNYK_VERSION}" != "${SNYK_LATEST}" ] ; then \
-	  echo "${RED}snyk ${SNYK_VERSION}${YELLOW} - update available: ${SNYK_LATEST}${RESET}" ; \
+		echo "${RED}snyk ${SNYK_VERSION}${YELLOW} - update available: ${SNYK_LATEST}${RESET}" ; \
 	else \
-	  echo "${GREEN}snyk ${SNYK_VERSION} - snyk is up to date.${RESET}" ; \
+		echo "${GREEN}snyk ${SNYK_VERSION} - snyk is up to date.${RESET}" ; \
+	fi
+
+	@if [ "${TERRADOC_VERSION}" != "${TERRADOC_LATEST}" ] ; then \
+		echo "${RED}terradoc ${TERRADOC_VERSION}${YELLOW} - update available: ${TERRADOC_LATEST}${RESET}" ; \
+	else \
+		echo "${GREEN}terradoc ${TERRADOC_VERSION} - terradoc is up to date.${RESET}" ; \
 	fi
 
 ## Build the docker image
 .PHONY: docker/build
 docker/build:
 	docker build \
-	  --build-arg TERRAFORM_VERSION=${TERRAFORM_VERSION} \
-	  --build-arg PACKER_VERSION=${PACKER_VERSION} \
-	  --build-arg TFLINT_VERSION=${TFLINT_VERSION} \
-	  --build-arg PRECOMMIT_VERSION=${PRECOMMIT_VERSION} \
-      --build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
-      --build-arg CHECKOV_VERSION=${CHECKOV_VERSION} \
-	  -t ${BUILD_IMAGE} . | cat
+		--build-arg TERRAFORM_VERSION=${TERRAFORM_VERSION} \
+		--build-arg PACKER_VERSION=${PACKER_VERSION} \
+		--build-arg TFLINT_VERSION=${TFLINT_VERSION} \
+		--build-arg PRECOMMIT_VERSION=${PRECOMMIT_VERSION} \
+		--build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
+		--build-arg CHECKOV_VERSION=${CHECKOV_VERSION} \
+		--build-arg TERRADOC_VERSION=${TERRADOC_VERSION} \
+		-t ${BUILD_IMAGE} . | cat
 
 ## Create a new tag
 .PHONY: docker/tag
@@ -175,6 +184,8 @@ test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} pre-commit --version
 	docker run --rm ${BUILD_IMAGE} checkov --version
 	docker run --rm ${BUILD_IMAGE} golangci-lint --version
+	# NOTE: not yet supported
+	# docker run --rm ${BUILD_IMAGE} terradoc --version
 
 ## Display help for all targets
 .PHONY: help

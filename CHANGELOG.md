@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add terradoc `v0.0.8`
+
 ### Changed
 
 - Upgrade Terraform to `v1.1.7`
