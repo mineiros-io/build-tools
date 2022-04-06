@@ -1,4 +1,4 @@
-FROM golang:1.17.6-alpine3.14
+FROM golang:1.18.0-alpine3.15
 
 LABEL maintainer="The Mineiros.io Team <hello@mineiros.io>"
 
@@ -41,6 +41,9 @@ ARG CHECKOV_VERSION
 # golangci-lint https://github.com/golangci/golangci-lint
 ARG GOLANGCI_LINT_VERSION
 ARG GOLANGCI_LINT_URL=https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
+
+# terradoc https://github.com/mineiros-io/terradoc
+ARG TERRADOC_VERSION
 
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
@@ -110,6 +113,9 @@ RUN wget \
     sha256sum -cs $PACKER_CHECKSUM && \
     unzip $PACKER_ARCHIVE -d /usr/local/bin && \
     rm -f $PACKER_ARCHIVE $PACKER_CHECKSUM
+
+# Install terradoc
+RUN go install github.com/mineiros-io/terradoc/cmd/terradoc@v$TERRADOC_VERSION
 
 COPY scripts/entrypoint.sh /
 

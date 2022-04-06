@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1]
+
+### Added
+
+- Add terradoc `v0.0.8`
+
+### Changed
+
+- Upgrade Terraform to `v1.1.7`
+- Upgrade TFLint to `v0.35.0`
+- Upgrade Packer to `v1.8.0`
+- Upgrade pre-commit to `v2.18.1`
+- Upgrade golangci-lint to `v1.45.2`
+- Upgrade checkov to `2.0.1037`
+- Upgrade snyk to `1.896.0`
+- Update base image to `golang:1.18.0-alpine3.15`
+
+### Fixed
+
+- Follow redirects in version checks
+
 ## [0.15.0]
 
 ### Fixed
@@ -396,8 +417,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- References -->
 
-[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.15.0...HEAD
+[unreleased]: https://github.com/mineiros-io/build-tools/compare/v0.15.1...HEAD
 
+[0.15.1]: https://github.com/mineiros-io/build-tools/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/mineiros-io/build-tools/compare/v0.14.4...v0.15.0
 [0.14.4]: https://github.com/mineiros-io/build-tools/compare/v0.14.3...v0.14.4
 [0.14.3]: https://github.com/mineiros-io/build-tools/compare/v0.14.2...v0.14.3
