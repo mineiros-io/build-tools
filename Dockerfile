@@ -45,6 +45,9 @@ ARG GOLANGCI_LINT_URL=https://raw.githubusercontent.com/golangci/golangci-lint/m
 # terradoc https://github.com/mineiros-io/terradoc
 ARG TERRADOC_VERSION
 
+# terramate https://github.com/mineiros-io/terramate
+ARG TERRAMATE_VERSION
+
 # If TF_IN_AUTOMATION is set to any non-empty value, Terraform adjusts its output to avoid suggesting specific commands
 # to run next. This can make the output more consistent and less confusing in workflows where users don't directly
 # execute Terraform commands, like in CI systems or other wrapping applications.
@@ -72,6 +75,8 @@ RUN apk add --no-cache \
     python3-dev \
     py3-pip \
     shellcheck
+
+RUN git config --global --add safe.directory /build
 
 # Install pre-commit framework
 RUN pip3 install --ignore-installed pre-commit==$PRECOMMIT_VERSION
@@ -116,6 +121,9 @@ RUN wget \
 
 # Install terradoc
 RUN go install github.com/mineiros-io/terradoc/cmd/terradoc@v$TERRADOC_VERSION
+
+# Install terramate
+RUN go install github.com/mineiros-io/terramate/cmd/terramate@v$TERRAMATE_VERSION
 
 COPY scripts/entrypoint.sh /
 
