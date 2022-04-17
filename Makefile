@@ -13,6 +13,7 @@ GOLANGCI_LINT_VERSION = 1.45.2
 CHECKOV_VERSION = 2.0.1037
 SNYK_VERSION = 1.896.0
 TERRADOC_VERSION = 0.0.8
+TERRAMATE_VERSION = 0.0.13
 
 DOCKER_HUB_REPO ?= mineiros/build-tools
 # github magic tagging:
@@ -68,6 +69,7 @@ check/updates: TERRAFORM_LATEST = $(shell curl -sL https://checkpoint-api.hashic
 check/updates: CHECKOV_LATEST=$(shell curl -sL "https://api.github.com/repos/bridgecrewio/checkov/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: SNYK_LATEST=$(shell curl -sL "https://api.github.com/repos/snyk/snyk/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates: TERRADOC_LATEST=$(shell curl -sL "https://api.github.com/repos/mineiros-io/terradoc/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
+check/updates: TERRAMATE_LATEST=$(shell curl -sL "https://api.github.com/repos/mineiros-io/terramate/releases/latest" | jq -r -M '.tag_name' | sed -e 's/^v//')
 check/updates:
 	@if [ "${TERRAFORM_VERSION}" != "${TERRAFORM_LATEST}" ] ; then \
 		echo "${RED}terraform ${TERRAFORM_VERSION}${YELLOW} - update available: ${TERRAFORM_LATEST}${RESET}" ; \
@@ -117,6 +119,12 @@ check/updates:
 		echo "${GREEN}terradoc ${TERRADOC_VERSION} - terradoc is up to date.${RESET}" ; \
 	fi
 
+	@if [ "${TERRAMATE_VERSION}" != "${TERRAMATE_LATEST}" ] ; then \
+		echo "${RED}terramate ${TERRAMATE_VERSION}${YELLOW} - update available: ${TERRAMATE_LATEST}${RESET}" ; \
+	else \
+		echo "${GREEN}terramate ${TERRAMATE_VERSION} - terramate is up to date.${RESET}" ; \
+	fi
+
 ## Build the docker image
 .PHONY: docker/build
 docker/build:
@@ -128,6 +136,7 @@ docker/build:
 		--build-arg GOLANGCI_LINT_VERSION=${GOLANGCI_LINT_VERSION} \
 		--build-arg CHECKOV_VERSION=${CHECKOV_VERSION} \
 		--build-arg TERRADOC_VERSION=${TERRADOC_VERSION} \
+		--build-arg TERRAMATE_VERSION=${TERRAMATE_VERSION} \
 		-t ${BUILD_IMAGE} . | cat
 
 ## Create a new tag
@@ -186,6 +195,7 @@ test/execute-tools:
 	docker run --rm ${BUILD_IMAGE} golangci-lint --version
 	# NOTE: not yet supported
 	# docker run --rm ${BUILD_IMAGE} terradoc --version
+	docker run --rm ${BUILD_IMAGE} terramate --version
 
 ## Display help for all targets
 .PHONY: help
